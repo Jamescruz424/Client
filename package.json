@@ -3,29 +3,30 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^6.7.2",
-    "@fortawesome/free-brands-svg-icons": "^6.7.2",
-    "@fortawesome/free-solid-svg-icons": "^6.7.2",
-    "@fortawesome/react-fontawesome": "^0.2.2",
-    "axios": "^1.8.4",
-    "echarts": "^5.6.0",
-    "jsbarcode": "^3.11.6",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-icons": "^5.5.0",
-    "react-router-dom": "^6.30.0",
-    "react-scripts": "5.0.1"
+    "@fortawesome/fontawesome-free": "^6.7.2",           // Added for CSS-based icons
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",       // Core SVG library
+    "@fortawesome/free-brands-svg-icons": "^6.7.2",      // Brand icons (e.g., social media)
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",       // Solid icons (e.g., faTrash)
+    "@fortawesome/react-fontawesome": "^0.2.2",          // React component for SVG icons
+    "axios": "^1.8.4",                                   // HTTP requests
+    "echarts": "^5.6.0",                                 // Charting library
+    "jsbarcode": "^3.11.6",                              // Barcode generation
+    "react": "^18.2.0",                                  // React core
+    "react-dom": "^18.2.0",                              // React DOM
+    "react-icons": "^5.5.0",                             // Additional icon library
+    "react-router-dom": "^6.30.0",                       // Routing
+    "react-scripts": "5.0.1"                             // Build tools (CRA)
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "react-scripts start",                      // Development server
+    "build": "react-scripts build",                      // Production build
+    "test": "react-scripts test",                        // Testing
+    "eject": "react-scripts eject"                       // Eject CRA (optional)
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.0",
-    "postcss": "^8.4.0",
-    "tailwindcss": "^3.3.0"
+    "autoprefixer": "^10.4.0",                          // CSS prefixing for Tailwind
+    "postcss": "^8.4.0",                                // PostCSS for Tailwind
+    "tailwindcss": "^3.3.0"                             // Tailwind CSS
   },
   "browserslist": {
     "production": [
@@ -38,5 +39,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "engines": {
+    "node": "18.x"                                      // Specify Node version for Render
   }
 }
