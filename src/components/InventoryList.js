@@ -1,31 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faFilter, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
-import ProductDetails from './ProductDetails'; // Import ProductDetails component
+import { getInventory, deleteInventory } from '../services/api'; // Import from api.js (adjust path if needed)
+import ProductDetails from './ProductDetails'; // Ensure this component exists
 
 const InventoryList = () => {
   const [inventory, setInventory] = useState([]);
   const [filteredInventory, setFilteredInventory] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
-  const [selectedProduct, setSelectedProduct] = useState(null); // State for selected product
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [loading, setLoading] = useState(true); // Add loading state
+  const [error, setError] = useState(''); // Add error state
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchInventory = async () => {
+      setLoading(true);
+      setError('');
       try {
-        const response = await axios.get('http://localhost:5000/inventory');
+        const response = await getInventory(); // Use getInventory from api.js
+        console.log('Inventory response:', response.data);
         if (response.data.success) {
           setInventory(response.data.items);
           setFilteredInventory(response.data.items);
         } else {
-          alert('Failed to load inventory: ' + response.data.message);
+          setError(response.data.message || 'Failed to load inventory');
         }
       } catch (error) {
         console.error('Error fetching inventory:', error);
-        alert('Error fetching inventory');
+        setError(error.response?.data?.message || 'Error fetching inventory');
+      } finally {
+        setLoading(false);
       }
     };
     fetchInventory();
@@ -33,34 +40,39 @@ const InventoryList = () => {
 
   const handleDelete = async (itemId) => {
     if (window.confirm('Are you sure you want to delete this item?')) {
+      setLoading(true);
+      setError('');
       try {
-        const response = await axios.delete(`http://localhost:5000/inventory/${itemId}`);
+        const response = await deleteInventory(itemId); // Use deleteInventory from api.js
+        console.log('Delete response:', response.data);
         if (response.data.success) {
-          const updatedInventory = inventory.filter(item => item.id !== itemId);
+          const updatedInventory = inventory.filter((item) => item.id !== itemId);
           setInventory(updatedInventory);
           setFilteredInventory(updatedInventory);
           alert('Item deleted successfully!');
         } else {
-          alert('Failed to delete item: ' + response.data.message);
+          setError(response.data.message || 'Failed to delete item');
         }
       } catch (error) {
         console.error('Error deleting item:', error);
-        alert('Error deleting item');
+        setError(error.response?.data?.message || 'Error deleting item');
+      } finally {
+        setLoading(false);
       }
     }
   };
 
   const handleEdit = (itemId) => {
     console.log('Edit button clicked for item ID:', itemId);
-    navigate(`/admin-dashboard/edit-inventory/${itemId}`);
+    navigate(`/admin-dashboard/inventory/${itemId}`); // Adjusted to match EditInventory route
   };
 
   const handleViewDetails = (item) => {
-    setSelectedProduct(item); // Open modal with selected product
+    setSelectedProduct(item);
   };
 
   const handleCloseModal = () => {
-    setSelectedProduct(null); // Close modal
+    setSelectedProduct(null);
   };
 
   const handleSearch = (e) => {
@@ -76,15 +88,18 @@ const InventoryList = () => {
   };
 
   const filterInventory = (term, category) => {
-    let filtered = inventory;
+    let filtered = [...inventory];
     if (term) {
-      filtered = filtered.filter(item => item.name.toLowerCase().includes(term));
+      filtered = filtered.filter((item) => item.name.toLowerCase().includes(term));
     }
     if (category) {
-      filtered = filtered.filter(item => item.category === category);
+      filtered = filtered.filter((item) => item.category === category);
     }
     setFilteredInventory(filtered);
   };
+
+  if (loading) return <div className="p-8">Loading inventory...</div>;
+  if (error && !inventory.length) return <div className="p-8 text-red-600">{error}</div>;
 
   return (
     <main className="p-8">
@@ -117,6 +132,7 @@ const InventoryList = () => {
             />
           </div>
         </div>
+        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
@@ -132,7 +148,7 @@ const InventoryList = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {filteredInventory.map(item => (
+                {filteredInventory.map((item) => (
                   <tr key={item.id}>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {item.image_url ? (
@@ -155,12 +171,14 @@ const InventoryList = () => {
                       <button
                         onClick={() => handleEdit(item.id)}
                         className="text-black hover:text-black/90 mr-3"
+                        disabled={loading}
                       >
                         <FontAwesomeIcon icon={faEdit} /> Edit
                       </button>
                       <button
                         onClick={() => handleDelete(item.id)}
                         className="text-red-600 hover:text-red-900"
+                        disabled={loading}
                       >
                         <FontAwesomeIcon icon={faTrash} /> Delete
                       </button>
@@ -172,21 +190,27 @@ const InventoryList = () => {
           </div>
           <div className="mt-4 flex justify-between items-center">
             <div className="flex items-center">
-              <span className="text-sm text-gray-700">Showing 1 to {filteredInventory.length} of {inventory.length} entries</span>
+              <span className="text-sm text-gray-700">
+                Showing 1 to {filteredInventory.length} of {inventory.length} entries
+              </span>
             </div>
             <div className="flex items-center space-x-2">
-              <button className="px-3 py-1 border border-gray-300 rounded-lg text-sm disabled:opacity-50">Previous</button>
-              <button className="px-3 py-1 border border-gray-300 rounded-lg text-sm bg-black text-white">1</button>
-              <button className="px-3 py-1 border border-gray-300 rounded-lg text-sm disabled:opacity-50">Next</button>
+              <button className="px-3 py-1 border border-gray-300 rounded-lg text-sm disabled:opacity-50" disabled>
+                Previous
+              </button>
+              <button className="px-3 py-1 border border-gray-300 rounded-lg text-sm bg-black text-white">
+                1
+              </button>
+              <button className="px-3 py-1 border border-gray-300 rounded-lg text-sm disabled:opacity-50" disabled>
+                Next
+              </button>
             </div>
           </div>
         </div>
       </div>
 
       {/* Product Details Modal */}
-      {selectedProduct && (
-        <ProductDetails product={selectedProduct} onClose={handleCloseModal} />
-      )}
+      {selectedProduct && <ProductDetails product={selectedProduct} onClose={handleCloseModal} />}
     </main>
   );
 };
