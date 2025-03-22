@@ -11,6 +11,7 @@ function Login() {
     password: ''
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState(0);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -20,6 +21,25 @@ function Login() {
     const updatedValue = name === 'role' ? value.toLowerCase() : value;
     setFormData({ ...formData, [name]: updatedValue });
     setError('');
+
+    if (name === 'password') {
+      setPasswordStrength(calculatePasswordStrength(value));
+    }
+  };
+
+  const calculatePasswordStrength = (password) => {
+    let strength = 0;
+    if (password.length > 6) strength += 25;
+    if (password.match(/[A-Z]/)) strength += 25;
+    if (password.match(/[0-9]/)) strength += 25;
+    if (password.match(/[^A-Za-z0-9]/)) strength += 25;
+    return strength;
+  };
+
+  const getStrengthText = () => {
+    if (passwordStrength < 33) return 'weak';
+    if (passwordStrength < 66) return 'medium';
+    return 'strong';
   };
 
   const handleSubmit = async (e) => {
@@ -175,6 +195,17 @@ function Login() {
                     >
                       <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
                     </div>
+                  </div>
+                  <div className="mt-2">
+                    <div className="h-1 w-full bg-gray-200 rounded-full overflow-hidden">
+                      <div 
+                        className="h-1 bg-black transition-all duration-300"
+                        style={{ width: `${passwordStrength}%` }}
+                      ></div>
+                    </div>
+                    <p className="mt-1 text-xs text-gray-500">
+                      Password strength: <span className="font-medium">{getStrengthText()}</span>
+                    </p>
                   </div>
                 </div>
               </div>
