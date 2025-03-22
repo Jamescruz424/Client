@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Base URL of your Flask API
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000'; // Use environment variable for deployment
+const API_URL = process.env.REACT_APP_API_URL || 'https://server1-p5co.onrender.com'; // Use environment variable for deployment
 
 // Create an Axios instance
 const api = axios.create({
