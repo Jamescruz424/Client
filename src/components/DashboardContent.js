@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCube, faExclamationTriangle, faTimesCircle, faDollarSign, faPlus, faMinus, faExclamation, faFile, faChartBar, faBarcode } from '@fortawesome/free-solid-svg-icons';
 import * as echarts from 'echarts';
+import { getDashboardData } from '../services/api'; // Import from api.js (adjust path if needed)
 
 const DashboardContent = () => {
   const [dashboardData, setDashboardData] = useState({
@@ -28,8 +28,10 @@ const DashboardContent = () => {
         return;
       }
 
+      setLoading(true);
+      setError('');
       try {
-        const response = await axios.get('http://localhost:5000/dashboard');
+        const response = await getDashboardData(); // Use getDashboardData from api.js
         console.log('Dashboard response:', response.data);
         if (response.data.success) {
           setDashboardData(response.data.data);
@@ -49,7 +51,7 @@ const DashboardContent = () => {
 
   useEffect(() => {
     if (!loading && !error) {
-      // Inventory Value Trend Chart (simplified with static days for now)
+      // Inventory Value Trend Chart
       const inventoryChart = echarts.init(document.getElementById('inventoryChart'));
       const inventoryOption = {
         animation: false,
@@ -58,19 +60,27 @@ const DashboardContent = () => {
         xAxis: { type: 'category', boundaryGap: false, data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] },
         yAxis: { type: 'value' },
         series: [{
-          data: [dashboardData.total_value * 0.8, dashboardData.total_value * 0.9, dashboardData.total_value * 0.7, dashboardData.total_value, dashboardData.total_value * 0.6, dashboardData.total_value * 1.2, dashboardData.total_value * 1.1],
+          data: [
+            dashboardData.total_value * 0.8,
+            dashboardData.total_value * 0.9,
+            dashboardData.total_value * 0.7,
+            dashboardData.total_value,
+            dashboardData.total_value * 0.6,
+            dashboardData.total_value * 1.2,
+            dashboardData.total_value * 1.1,
+          ],
           type: 'line',
           areaStyle: { opacity: 0.1 },
           lineStyle: { color: '#4F46E5' },
-          itemStyle: { color: '#4F46E5' }
-        }]
+          itemStyle: { color: '#4F46E5' },
+        }],
       };
       inventoryChart.setOption(inventoryOption);
 
-      // Stock by Category Chart (requires category aggregation)
+      // Stock by Category Chart
       const categoryChart = echarts.init(document.getElementById('categoryChart'));
       const categoryCounts = {};
-      dashboardData.low_stock_items.forEach(item => {
+      dashboardData.low_stock_items.forEach((item) => {
         categoryCounts[item.category] = (categoryCounts[item.category] || 0) + item.quantity;
       });
       const categoryData = Object.entries(categoryCounts).map(([name, value]) => ({ name, value }));
@@ -85,12 +95,12 @@ const DashboardContent = () => {
             { value: 735, name: 'Clothing' },
             { value: 580, name: 'Food' },
             { value: 484, name: 'Books' },
-            { value: 300, name: 'Others' }
+            { value: 300, name: 'Others' },
           ],
           emphasis: {
-            itemStyle: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0, 0, 0, 0.5)' }
-          }
-        }]
+            itemStyle: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0, 0, 0, 0.5)' },
+          },
+        }],
       };
       categoryChart.setOption(categoryOption);
 
@@ -111,8 +121,7 @@ const DashboardContent = () => {
   if (loading) return <div className="p-8">Loading dashboard...</div>;
   if (error) return <div className="p-8 text-red-600">{error}</div>;
 
-  // Calculate out of stock items
-  const outOfStockItems = dashboardData.low_stock_items.filter(item => item.quantity === 0).length;
+  const outOfStockItems = dashboardData.low_stock_items.filter((item) => item.quantity === 0).length;
 
   return (
     <main className="p-8">
@@ -196,14 +205,16 @@ const DashboardContent = () => {
             <div className="p-6">
               <div className="space-y-6">
                 {dashboardData.recent_orders.length > 0 ? (
-                  dashboardData.recent_orders.map(order => (
+                  dashboardData.recent_orders.map((order) => (
                     <div key={order.requestId} className="flex items-center">
                       <div className="flex-shrink-0">
-                        <span className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                          order.status === 'Pending' ? 'bg-yellow-100' :
-                          order.status === 'Approved' ? 'bg-green-100' :
-                          'bg-red-100'
-                        }`}>
+                        <span
+                          className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                            order.status === 'Pending' ? 'bg-yellow-100' :
+                            order.status === 'Approved' ? 'bg-green-100' :
+                            'bg-red-100'
+                          }`}
+                        >
                           <FontAwesomeIcon
                             icon={order.status === 'Pending' ? faExclamation : order.status === 'Approved' ? faPlus : faMinus}
                             className={order.status === 'Pending' ? 'text-yellow-600' : order.status === 'Approved' ? 'text-green-600' : 'text-red-600'}
