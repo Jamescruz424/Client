@@ -1,19 +1,22 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import JsBarcode from 'jsbarcode';
 import { FaBell, FaTimes, FaHandshake, FaHeart, FaShareAlt, FaPrint } from 'react-icons/fa';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { createRequest } from '../services/api'; // Import from api.js (adjust path if needed)
 
 const getCurrentUserId = () => {
   const userId = localStorage.getItem('userId');
-  console.log('Retrieved userId:', userId); // Debug userId
+  console.log('Retrieved userId:', userId);
   return userId || null;
 };
 
 const ProductDetails = ({ product, onClose }) => {
-  const [showNotification, setShowNotification] = React.useState(true);
-  const barcodeRefTop = useRef(null); // Top-right barcode
-  const barcodeRefBottom = useRef(null); // Bottom barcode
+  const [showNotification, setShowNotification] = useState(true);
+  const [loading, setLoading] = useState(false); // Add loading state for request
+  const [error, setError] = useState(''); // Add error state
+  const [success, setSuccess] = useState(''); // Add success state
+  const barcodeRefTop = useRef(null);
+  const barcodeRefBottom = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -101,7 +104,7 @@ const ProductDetails = ({ product, onClose }) => {
       navigator.clipboard.writeText(shareUrl).then(() => {
         alert('Product link copied to clipboard!');
         console.log('Copied to clipboard:', shareUrl);
-      }).catch(err => {
+      }).catch((err) => {
         console.error('Failed to copy:', err);
         alert('Failed to copy link. Share this URL manually: ' + shareUrl);
       });
@@ -111,48 +114,43 @@ const ProductDetails = ({ product, onClose }) => {
   const handleRequest = async () => {
     const userId = getCurrentUserId();
     if (!userId) {
-      alert('You must be logged in to request an item. Redirecting to login...');
-      console.warn('No userId found - redirecting to login');
-      navigate('/login');
+      setError('You must be logged in to request an item. Redirecting to login...');
+      setTimeout(() => navigate('/login'), 2000);
       return;
     }
 
-    try {
-      const requestData = {
-        userId: userId,
-        productId: product.id,
-        productName: product.name,
-        timestamp: new Date().toISOString(),
-        status: 'Pending',
-      };
+    setLoading(true);
+    setError('');
+    setSuccess('');
 
-      // Validate payload before sending
+    const requestData = {
+      userId: userId,
+      productId: product.id,
+      productName: product.name,
+      timestamp: new Date().toISOString(),
+      status: 'Pending',
+    };
+
+    try {
       if (!requestData.userId || !requestData.productId || !requestData.productName || !requestData.timestamp) {
-        console.error('Invalid request data:', requestData);
         throw new Error('Missing required fields in request payload');
       }
 
       console.log('Sending request payload:', JSON.stringify(requestData, null, 2));
-      const response = await axios.post('http://localhost:5000/requests', requestData, {
-        headers: { 'Content-Type': 'application/json' },
-      });
-
+      const response = await createRequest(requestData); // Use createRequest from api.js
       console.log('Server response:', JSON.stringify(response.data, null, 2));
+
       if (response.data.success) {
-        alert('Request submitted successfully!');
+        setSuccess('Request submitted successfully!');
+        setTimeout(() => setSuccess(''), 3000); // Clear success message after 3s
       } else {
-        alert('Failed to submit request: ' + response.data.message);
+        setError(response.data.message || 'Failed to submit request');
       }
     } catch (error) {
-      const errorDetails = error.response
-        ? {
-            status: error.response.status,
-            data: error.response.data,
-            headers: error.response.headers,
-          }
-        : { message: error.message };
-      console.error('Request error details:', JSON.stringify(errorDetails, null, 2));
-      alert('Error submitting request: ' + (error.response?.data?.message || error.message));
+      console.error('Request error:', error);
+      setError(error.response?.data?.message || 'Error submitting request: ' + error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -220,23 +218,34 @@ const ProductDetails = ({ product, onClose }) => {
               </div>
             </div>
 
+            {/* Feedback Messages */}
+            {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+            {success && <p className="text-green-500 text-sm mb-4">{success}</p>}
+
             {/* Buttons */}
             <div className="space-y-4 no-print">
               <button
                 onClick={handleRequest}
-                className="w-full bg-black text-white py-3 px-4 rounded hover:bg-black/90 flex items-center justify-center"
+                className={`w-full py-3 px-4 rounded flex items-center justify-center text-white ${
+                  loading ? 'bg-gray-500 cursor-not-allowed' : 'bg-black hover:bg-black/90'
+                }`}
+                disabled={loading}
               >
                 <FaHandshake className="mr-2" />
-                Request Item
+                {loading ? 'Requesting...' : 'Request Item'}
               </button>
               <div className="grid grid-cols-3 gap-4">
-                <button className="w-full border border-black text-black py-3 px-4 rounded hover:bg-gray-50 flex items-center justify-center">
+                <button
+                  className="w-full border border-black text-black py-3 px-4 rounded hover:bg-gray-50 flex items-center justify-center"
+                  disabled={loading}
+                >
                   <FaHeart className="mr-2" />
                   Save
                 </button>
                 <button
                   onClick={handleShare}
                   className="w-full border border-black text-black py-3 px-4 rounded hover:bg-gray-50 flex items-center justify-center"
+                  disabled={loading}
                 >
                   <FaShareAlt className="mr-2" />
                   Share
@@ -244,6 +253,7 @@ const ProductDetails = ({ product, onClose }) => {
                 <button
                   onClick={handlePrint}
                   className="w-full border border-black text-black py-3 px-4 rounded hover:bg-gray-50 flex items-center justify-center"
+                  disabled={loading}
                 >
                   <FaPrint className="mr-2" />
                   Print
@@ -260,6 +270,7 @@ const ProductDetails = ({ product, onClose }) => {
         <button
           className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 no-print"
           onClick={onClose}
+          disabled={loading}
         >
           <FaTimes className="text-xl" />
         </button>
