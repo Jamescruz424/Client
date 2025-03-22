@@ -1,15 +1,36 @@
 import axios from 'axios';
 
-// Base URL of your Flask API
-const API_URL = process.env.REACT_APP_API_URL || 'https://server-ywxs.onrender.com'; // Use environment variable for deployment
+const API_URL = process.env.REACT_APP_API_URL || 'https://server-ywxs.onrender.com';
 
-// Create an Axios instance
 const api = axios.create({
   baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
 });
+
+// Add request/response interceptors for debugging
+api.interceptors.request.use(
+  (config) => {
+    console.log('Request:', config);
+    return config;
+  },
+  (error) => {
+    console.error('Request Error:', error);
+    return Promise.reject(error);
+  }
+);
+
+api.interceptors.response.use(
+  (response) => {
+    console.log('Response:', response);
+    return response;
+  },
+  (error) => {
+    console.error('Response Error:', error.response || error.message);
+    return Promise.reject(error);
+  }
+);
 
 // Authentication Endpoints
 export const registerUser = (userData) => api.post('/register', userData);
