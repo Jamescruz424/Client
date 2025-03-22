@@ -46,7 +46,6 @@ function Login() {
     console.log('Submitting form with data:', formData);
 
     try {
-      // Use environment variable for backend URL
       const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
       const response = await axios.post(`${apiUrl}/login`, formData, {
         headers: {
@@ -75,11 +74,11 @@ function Login() {
     } catch (error) {
       console.error('Login error:', error);
       if (error.response) {
-        setError(error.response.data.message || 'Server error occurred');
+        setError(error.response.data.message || 'An error occurred on the server');
       } else if (error.request) {
         setError('No response from server. Check if backend is running.');
       } else {
-        setError('An error occurred during login');
+        setError('An unexpected error occurred during login');
       }
     } finally {
       setLoading(false);
