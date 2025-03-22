@@ -20,12 +20,16 @@ const Login = () => {
       console.log('Server response:', response.data); // Debug response
       if (response.data.success) {
         const { role } = response.data;
+        console.log('Sent Role:', formData.role); // Added for debugging
+        console.log('Received Role:', response.data.role); // Added for debugging
         // Navigate based on role
-        if (role === 'admin') {
+        if (role.toLowerCase() === 'admin') {
           navigate('/admin-dashboard');
         } else {
           navigate('/user-dashboard');
         }
+      } else {
+        setError(response.data.message || 'Login failed');
       }
     } catch (error) {
       console.log('Full error response:', error.response); // Debug error
