@@ -11,7 +11,7 @@ import DashboardContent from './components/DashboardContent';
 import EditInventory from './components/EditInventory';
 import ViewAssets from './components/ViewAssets';
 import Requests from './components/Requests';
-import Orders from './components/Orders'; // New Orders component
+import Orders from './components/Orders';
 
 function App() {
   return (
@@ -25,7 +25,7 @@ function App() {
           <Route path="inventory" element={<InventoryList />} />
           <Route path="add-inventory" element={<AddInventory />} />
           <Route path="edit-inventory/:id" element={<EditInventory />} />
-          <Route path="orders" element={<Orders />} /> {/* New Orders route */}
+          <Route path="orders" element={<Orders />} />
         </Route>
         <Route path="/user-dashboard" element={<UserDashboard />}>
           <Route index element={<div>User Dashboard Home</div>} />
