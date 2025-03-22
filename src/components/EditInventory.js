@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-solid-svg-icons';
+import { getInventory, updateInventory } from '../services/api'; // Import from api.js (adjust path if needed)
 
 const EditInventory = () => {
   const { id } = useParams(); // Get item ID from URL
@@ -13,15 +13,21 @@ const EditInventory = () => {
     sku: '',
     quantity: '',
     unit_price: '',
-    image_url: ''
+    image_url: '',
   });
+  const [loading, setLoading] = useState(true); // Add loading state for fetching
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   useEffect(() => {
     const fetchItem = async () => {
+      setLoading(true);
+      setError('');
       try {
-        const response = await axios.get(`http://localhost:5000/inventory`);
+        const response = await getInventory(); // Use getInventory from api.js
+        console.log('Inventory response:', response.data);
         if (response.data.success) {
-          const item = response.data.items.find(item => item.id === id);
+          const item = response.data.items.find((item) => item.id === id);
           if (item) {
             setFormData({
               name: item.name,
@@ -29,16 +35,20 @@ const EditInventory = () => {
               sku: item.sku,
               quantity: item.quantity,
               unit_price: item.unit_price,
-              image_url: item.image_url || ''
+              image_url: item.image_url || '',
             });
           } else {
-            alert('Item not found');
-            navigate('/admin-dashboard/inventory');
+            setError('Item not found');
+            setTimeout(() => navigate('/admin-dashboard/inventory'), 1500);
           }
+        } else {
+          setError(response.data.message || 'Failed to fetch inventory');
         }
       } catch (error) {
         console.error('Error fetching item:', error);
-        alert('Error fetching item');
+        setError(error.response?.data?.message || 'Error fetching item');
+      } finally {
+        setLoading(false);
       }
     };
     fetchItem();
@@ -51,22 +61,46 @@ const EditInventory = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError('');
+    setSuccess('');
+
+    // Prepare data with correct types
+    const data = {
+      name: formData.name,
+      category: formData.category,
+      sku: formData.sku,
+      quantity: parseInt(formData.quantity, 10),
+      unit_price: parseFloat(formData.unit_price),
+      image_url: formData.image_url || null,
+    };
+
     try {
-      // Note: You'll need a PUT endpoint in app.py for this to work fully
-      const response = await axios.put(`http://localhost:5000/inventory/${id}`, formData, {
-        headers: { 'Content-Type': 'application/json' }
-      });
+      console.log('Submitting update for item:', id, data);
+      const response = await updateInventory(id, data); // Use updateInventory from api.js
+      console.log('Update response:', response.data);
       if (response.data.success) {
-        alert('Item updated successfully!');
-        navigate('/admin-dashboard/inventory');
+        setSuccess('Item updated successfully!');
+        setTimeout(() => navigate('/admin-dashboard/inventory'), 1500);
       } else {
-        alert('Failed to update item: ' + response.data.message);
+        setError(response.data.message || 'Failed to update item');
       }
     } catch (error) {
       console.error('Error updating item:', error);
-      alert('Error updating item');
+      if (error.response) {
+        setError(error.response.data.message || 'Failed to update item');
+      } else if (error.request) {
+        setError('Network error: Unable to reach the server');
+      } else {
+        setError(`An unexpected error occurred: ${error.message}`);
+      }
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading && !formData.name) return <div className="p-8">Loading item details...</div>;
+  if (error && !formData.name) return <div className="p-8 text-red-600">{error}</div>;
 
   return (
     <main className="p-8">
@@ -141,12 +175,20 @@ const EditInventory = () => {
                 placeholder="https://example.com/image.jpg"
               />
             </div>
+
+            {/* Display Success/Error Messages */}
+            {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+            {success && <p className="text-green-500 text-sm text-center">{success}</p>}
+
             <button
               type="submit"
-              className="w-full px-4 py-2 bg-black text-white rounded-lg text-sm font-medium hover:bg-black/90"
+              disabled={loading}
+              className={`w-full px-4 py-2 text-white rounded-lg text-sm font-medium flex items-center justify-center ${
+                loading ? 'bg-gray-500 cursor-not-allowed' : 'bg-black hover:bg-black/90'
+              }`}
             >
               <FontAwesomeIcon icon={faSave} className="mr-2" />
-              Save Changes
+              {loading ? 'Saving...' : 'Save Changes'}
             </button>
           </form>
         </div>
