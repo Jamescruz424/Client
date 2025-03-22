@@ -15,6 +15,9 @@ function Registration() {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
+  const [loading, setLoading] = useState(false); // Add loading state
+  const [error, setError] = useState(''); // Add error state
+  const [success, setSuccess] = useState(''); // Add success state
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -43,32 +46,48 @@ function Registration() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Start loading
+    setError(''); // Reset error
+    setSuccess(''); // Reset success
+
+    // Optional: Add client-side validation
+    if (passwordStrength < 50) {
+      setError('Password is too weak. Please use a stronger password.');
+      setLoading(false);
+      return;
+    }
+
     try {
-      // Use environment variable for backend URL
       const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
       const response = await axios.post(`${apiUrl}/register`, formData);
-      console.log(response.data);
-      navigate('/login');
+      setSuccess(response.data.message); // e.g., "User registered successfully"
+      setTimeout(() => navigate('/login'), 1500); // Redirect after brief delay
     } catch (error) {
-      console.error("Registration error:", error);
+      console.error('Registration error:', error);
       if (error.response) {
-        alert(error.response.data.message || 'Registration failed');
+        setError(error.response.data.message || 'Registration failed');
       } else if (error.request) {
-        alert('Network error: Unable to reach the server');
+        setError('Network error: Unable to reach the server');
       } else {
-        alert('An unexpected error occurred');
+        setError('An unexpected error occurred');
       }
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
+  const handleSignInClick = () => {
+    navigate('/login'); // Navigate to login page
+  };
+
   return (
-    <div 
+    <div
       className="min-h-screen font-['Inter']"
       style={{
         backgroundImage: `url('https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        backgroundAttachment: 'fixed'
+        backgroundAttachment: 'fixed',
       }}
     >
       <nav className="fixed top-0 left-0 right-0 bg-white shadow-lg z-50">
@@ -164,6 +183,7 @@ function Registration() {
                     name="dept"
                     value={formData.dept}
                     onChange={handleChange}
+                    required // Add required attribute
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black sm:text-sm"
                   >
                     <option value="">Select department</option>
@@ -202,7 +222,7 @@ function Registration() {
                       className="block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black sm:text-sm"
                       placeholder="Create a strong password"
                     />
-                    <div 
+                    <div
                       className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 cursor-pointer"
                       onClick={() => setShowPassword(!showPassword)}
                     >
@@ -211,7 +231,7 @@ function Registration() {
                   </div>
                   <div className="mt-2">
                     <div className="h-1 w-full bg-gray-200 rounded-full overflow-hidden">
-                      <div 
+                      <div
                         className="h-1 bg-black transition-all duration-300"
                         style={{ width: `${passwordStrength}%` }}
                       ></div>
@@ -223,13 +243,26 @@ function Registration() {
                 </div>
               </div>
 
+              {/* Display Success/Error Messages */}
+              {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+              {success && <p className="text-green-500 text-sm text-center">{success}</p>}
+
               <div className="mt-6">
                 <button
                   type="submit"
-                  className="w-full rounded-md bg-black py-4 px-4 text-white font-semibold hover:bg-black/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-all duration-300 flex items-center justify-center text-lg"
+                  disabled={loading} // Disable button when loading
+                  className={`w-full rounded-md py-4 px-4 text-white font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-all duration-300 flex items-center justify-center text-lg ${
+                    loading ? 'bg-gray-500 cursor-not-allowed' : 'bg-black hover:bg-black/90'
+                  }`}
                 >
-                  <span>Create Account</span>
-                  <FontAwesomeIcon icon={faArrowRight} className="ml-2" />
+                  {loading ? (
+                    <span>Creating Account...</span>
+                  ) : (
+                    <>
+                      <span>Create Account</span>
+                      <FontAwesomeIcon icon={faArrowRight} className="ml-2" />
+                    </>
+                  )}
                 </button>
               </div>
             </form>
@@ -237,9 +270,12 @@ function Registration() {
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600 flex items-center justify-center gap-2">
                 Already have an account?
-                <a href="#" className="font-semibold text-black hover:text-black/90 transition-colors duration-300">
+                <button
+                  onClick={handleSignInClick}
+                  className="font-semibold text-black hover:text-black/90 transition-colors duration-300 focus:outline-none"
+                >
                   Sign in here
-                </a>
+                </button>
               </p>
             </div>
           </div>
