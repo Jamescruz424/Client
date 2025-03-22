@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { getRequests, deleteRequest } from '../services/api'; // Import from api.js (adjust path if needed)
 
 const Requests = () => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(''); // Add success state for feedback
   const [filters, setFilters] = useState({
     requestType: 'All Request Types',
     status: 'All Status',
@@ -26,11 +27,13 @@ const Requests = () => {
         return;
       }
 
+      setLoading(true);
+      setError('');
       try {
-        const response = await axios.get('http://localhost:5000/requests');
+        const response = await getRequests(); // Use getRequests from api.js
         console.log('Fetch response:', response.data);
         if (response.data.success) {
-          const userRequests = response.data.requests.filter(req => req.userId === userId);
+          const userRequests = response.data.requests.filter((req) => req.userId === userId);
           setRequests(userRequests);
           console.log('Set user requests:', userRequests);
         } else {
@@ -56,33 +59,37 @@ const Requests = () => {
     const userId = localStorage.getItem('userId');
     if (!window.confirm('Are you sure you want to delete this request?')) return;
 
+    setLoading(true);
+    setError('');
+    setSuccess('');
     try {
-      const response = await axios.delete(`http://localhost:5000/requests/${requestId}`, {
-        data: { userId }, // Send userId in request body
-      });
+      const response = await deleteRequest(requestId, { userId }); // Use deleteRequest from api.js
       console.log('Delete response:', response.data);
       if (response.data.success) {
-        setRequests(requests.filter(req => req.requestId !== requestId));
-        alert('Request deleted successfully!');
+        setRequests(requests.filter((req) => req.requestId !== requestId));
+        setSuccess('Request deleted successfully!');
+        setTimeout(() => setSuccess(''), 3000); // Clear success message after 3s
       } else {
         setError(response.data.message || 'Failed to delete request');
       }
     } catch (err) {
       console.error('Delete error:', err);
       setError(err.response?.data?.message || 'Error deleting request');
+    } finally {
+      setLoading(false);
     }
   };
 
-  const filteredRequests = requests.filter(req => {
+  const filteredRequests = requests.filter((req) => {
     const matchesType = filters.requestType === 'All Request Types' || req.requestType === filters.requestType;
     const matchesStatus = filters.status === 'All Status' || req.status === filters.status;
-    const matchesSearch = !filters.search || 
-      req.requestId.toLowerCase().includes(filters.search.toLowerCase());
+    const matchesSearch =
+      !filters.search || req.requestId.toLowerCase().includes(filters.search.toLowerCase());
     return matchesType && matchesStatus && matchesSearch;
   });
 
-  if (loading) return <div className="p-4 lg:ml-64 mt-14">Loading your requests...</div>;
-  if (error) return <div className="p-4 lg:ml-64 mt-14 text-red-600">{error}</div>;
+  if (loading && !requests.length) return <div className="p-4 lg:ml-64 mt-14">Loading your requests...</div>;
+  if (error && !requests.length) return <div className="p-4 lg:ml-64 mt-14 text-red-600">{error}</div>;
 
   return (
     <div className="p-4 lg:ml-64 mt-14">
@@ -96,6 +103,7 @@ const Requests = () => {
                 value={filters.requestType}
                 onChange={handleFilterChange}
                 className="w-full border border-gray-300 rounded-lg p-2.5"
+                disabled={loading}
               >
                 <option>All Request Types</option>
                 <option>New Asset</option>
@@ -110,6 +118,7 @@ const Requests = () => {
                 value={filters.status}
                 onChange={handleFilterChange}
                 className="w-full border border-gray-300 rounded-lg p-2.5"
+                disabled={loading}
               >
                 <option>All Status</option>
                 <option>Pending</option>
@@ -126,9 +135,13 @@ const Requests = () => {
                 onChange={handleFilterChange}
                 placeholder="Search by request ID..."
                 className="w-full border border-gray-300 rounded-lg p-2.5"
+                disabled={loading}
               />
             </div>
           </div>
+          {/* Display Success/Error Messages */}
+          {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+          {success && <p className="text-green-500 text-sm mb-4">{success}</p>}
           <table className="w-full text-sm text-left">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50">
               <tr>
@@ -140,17 +153,20 @@ const Requests = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredRequests.map(req => (
+              {filteredRequests.map((req) => (
                 <tr key={req.requestId} className="bg-white border-b">
                   <td className="px-6 py-4">{req.requestId}</td>
                   <td className="px-6 py-4">{req.productName}</td>
                   <td className="px-6 py-4">
                     <span
                       className={`px-2 py-1 text-xs font-medium rounded-full ${
-                        req.status === 'Pending' ? 'text-yellow-700 bg-yellow-100' :
-                        req.status === 'Approved' ? 'text-green-700 bg-green-100' :
-                        req.status === 'Rejected' ? 'text-red-700 bg-red-100' :
-                        'text-gray-700 bg-gray-100'
+                        req.status === 'Pending'
+                          ? 'text-yellow-700 bg-yellow-100'
+                          : req.status === 'Approved'
+                          ? 'text-green-700 bg-green-100'
+                          : req.status === 'Rejected'
+                          ? 'text-red-700 bg-red-100'
+                          : 'text-gray-700 bg-gray-100'
                       }`}
                     >
                       {req.status}
@@ -161,6 +177,7 @@ const Requests = () => {
                     <button
                       onClick={() => handleDelete(req.requestId)}
                       className="text-red-600 hover:underline"
+                      disabled={loading}
                     >
                       Delete
                     </button>
