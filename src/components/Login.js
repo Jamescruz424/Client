@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faLock, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { faGoogle as faGoogleFab, faFacebookF as faFacebookFab } from '@fortawesome/free-brands-svg-icons';
+import { loginUser } from '../services/api'; // Import from api.js (adjust path if needed)
 
 function Login() {
   const [formData, setFormData] = useState({
     role: 'user', // Default to lowercase to match backend expectations
     email: '',
-    password: ''
+    password: '',
   });
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(''); // Add success state
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -28,6 +29,7 @@ function Login() {
     e.preventDefault();
     setLoading(true);
     setError('');
+    setSuccess('');
 
     if (!formData.email || !formData.password || !formData.role) {
       setError('Please fill in all required fields');
@@ -35,42 +37,39 @@ function Login() {
       return;
     }
 
-    console.log('Submitting form with data:', formData);
+    console.log('Submitting login with data:', formData);
 
     try {
-      const response = await axios.post('http://localhost:5000/login', formData, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-
-      console.log('Server response:', response.data);
+      const response = await loginUser(formData); // Use loginUser from api.js
+      console.log('Login response:', response.data);
 
       if (response.data.success) {
         const { role, user } = response.data;
-        // Store userId (local_id) in localStorage
         localStorage.setItem('userId', user.id);
-        localStorage.setItem('userRole', role); // Optional: store role for future use
+        localStorage.setItem('userRole', role);
         console.log('Stored userId:', user.id, 'Role:', role);
 
-        if (role === 'admin') {
-          navigate('/admin-dashboard');
-        } else if (role === 'user') {
-          navigate('/user-dashboard');
-        } else {
-          setError('Unknown role received from server');
-        }
+        setSuccess('Login successful! Redirecting...');
+        setTimeout(() => {
+          if (role === 'admin') {
+            navigate('/admin-dashboard');
+          } else if (role === 'user') {
+            navigate('/user-dashboard');
+          } else {
+            setError('Unknown role received from server');
+          }
+        }, 1500);
       } else {
         setError(response.data.message || 'Login failed');
       }
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('Login error details:', error);
       if (error.response) {
         setError(error.response.data.message || 'Server error occurred');
       } else if (error.request) {
-        setError('No response from server. Check if backend is running.');
+        setError('Network error: Unable to reach the server');
       } else {
-        setError('An error occurred during login');
+        setError(`An unexpected error occurred: ${error.message}`);
       }
     } finally {
       setLoading(false);
@@ -89,6 +88,11 @@ function Login() {
         {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
             <span className="block sm:inline">{error}</span>
+          </div>
+        )}
+        {success && (
+          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+            <span className="block sm:inline">{success}</span>
           </div>
         )}
 
