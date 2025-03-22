@@ -11,7 +11,7 @@ function Registration() {
     id: '',
     dept: '',
     password: '',
-    role: 'user' // Default to 'user'
+    role: 'user',
   });
   const [showPassword, setShowPassword] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
@@ -44,15 +44,19 @@ function Registration() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/register', formData);
+      // Use environment variable for backend URL
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const response = await axios.post(`${apiUrl}/register`, formData);
       console.log(response.data);
       navigate('/login');
     } catch (error) {
       console.error("Registration error:", error);
       if (error.response) {
         alert(error.response.data.message || 'Registration failed');
+      } else if (error.request) {
+        alert('Network error: Unable to reach the server');
       } else {
-        alert('An error occurred during registration');
+        alert('An unexpected error occurred');
       }
     }
   };
