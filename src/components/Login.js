@@ -7,7 +7,7 @@ import { faGoogle as faGoogleFab, faFacebookF as faFacebookFab } from '@fortawes
 
 function Login() {
   const [formData, setFormData] = useState({
-    role: 'user', // Default to lowercase to match backend expectations
+    role: 'user',
     email: '',
     password: ''
   });
@@ -29,8 +29,16 @@ function Login() {
     setLoading(true);
     setError('');
 
+    // Client-side validation
     if (!formData.email || !formData.password || !formData.role) {
       setError('Please fill in all required fields');
+      setLoading(false);
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setError('Please enter a valid email address');
       setLoading(false);
       return;
     }
@@ -38,7 +46,9 @@ function Login() {
     console.log('Submitting form with data:', formData);
 
     try {
-      const response = await axios.post('http://localhost:5000/login', formData, {
+      // Use environment variable for backend URL
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const response = await axios.post(`${apiUrl}/login`, formData, {
         headers: {
           'Content-Type': 'application/json'
         }
@@ -48,9 +58,8 @@ function Login() {
 
       if (response.data.success) {
         const { role, user } = response.data;
-        // Store userId (local_id) in localStorage
         localStorage.setItem('userId', user.id);
-        localStorage.setItem('userRole', role); // Optional: store role for future use
+        localStorage.setItem('userRole', role);
         console.log('Stored userId:', user.id, 'Role:', role);
 
         if (role === 'admin') {
