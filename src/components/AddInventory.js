@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { addInventory } from '../services/api'; // Import from api.js (adjust path if needed)
 
 const AddInventory = () => {
   const [formData, setFormData] = useState({
@@ -11,8 +11,11 @@ const AddInventory = () => {
     sku: '',
     quantity: '',
     unit_price: '',
-    image_url: '' // Change from 'image' to 'image_url'
+    image_url: '',
   });
+  const [loading, setLoading] = useState(false); // Add loading state
+  const [error, setError] = useState(''); // Add error state
+  const [success, setSuccess] = useState(''); // Add success state
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -22,31 +25,37 @@ const AddInventory = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // No need for FormData since we're sending JSON now
+    setLoading(true);
+    setError('');
+    setSuccess('');
+
+    // Prepare data for API (convert quantity and unit_price to numbers)
     const data = {
       name: formData.name,
       category: formData.category,
       sku: formData.sku,
-      quantity: formData.quantity,
-      unit_price: formData.unit_price,
-      image_url: formData.image_url || null // Send null if no URL provided
+      quantity: parseInt(formData.quantity, 10), // Convert to integer
+      unit_price: parseFloat(formData.unit_price), // Convert to float
+      image_url: formData.image_url || null, // Send null if empty
     };
 
     try {
-      const response = await axios.post('http://localhost:5000/inventory', data, {
-        headers: {
-          'Content-Type': 'application/json' // Change to JSON
-        }
-      });
-      if (response.data.success) {
-        alert('Item added successfully!');
-        navigate('/admin-dashboard/inventory');
-      } else {
-        alert('Failed to add item: ' + response.data.message);
-      }
+      console.log('Submitting inventory item:', data);
+      const response = await addInventory(data); // Use addInventory from api.js
+      console.log('Add inventory response:', response.data);
+      setSuccess(response.data.message || 'Item added successfully!');
+      setTimeout(() => navigate('/admin-dashboard/inventory'), 1500);
     } catch (error) {
       console.error('Error adding item:', error);
-      alert('Error adding item');
+      if (error.response) {
+        setError(error.response.data.message || 'Failed to add item');
+      } else if (error.request) {
+        setError('Network error: Unable to reach the server');
+      } else {
+        setError(`An unexpected error occurred: ${error.message}`);
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -123,12 +132,20 @@ const AddInventory = () => {
                 placeholder="https://example.com/image.jpg"
               />
             </div>
+
+            {/* Display Success/Error Messages */}
+            {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+            {success && <p className="text-green-500 text-sm text-center">{success}</p>}
+
             <button
               type="submit"
-              className="w-full px-4 py-2 bg-black text-white rounded-lg text-sm font-medium hover:bg-black/90"
+              disabled={loading}
+              className={`w-full px-4 py-2 text-white rounded-lg text-sm font-medium flex items-center justify-center ${
+                loading ? 'bg-gray-500 cursor-not-allowed' : 'bg-black hover:bg-black/90'
+              }`}
             >
               <FontAwesomeIcon icon={faPlus} className="mr-2" />
-              Add Item
+              {loading ? 'Adding Item...' : 'Add Item'}
             </button>
           </form>
         </div>
