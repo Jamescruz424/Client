@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash, faCheckCircle, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { registerUser } from '../services/api'; // Import from api.js (adjust path if needed)
 
 function Registration() {
   const [formData, setFormData] = useState({
@@ -15,9 +15,9 @@ function Registration() {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
-  const [loading, setLoading] = useState(false); // Add loading state
-  const [error, setError] = useState(''); // Add error state
-  const [success, setSuccess] = useState(''); // Add success state
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -46,11 +46,10 @@ function Registration() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); // Start loading
-    setError(''); // Reset error
-    setSuccess(''); // Reset success
+    setLoading(true);
+    setError('');
+    setSuccess('');
 
-    // Optional: Add client-side validation
     if (passwordStrength < 50) {
       setError('Password is too weak. Please use a stronger password.');
       setLoading(false);
@@ -58,26 +57,30 @@ function Registration() {
     }
 
     try {
-      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
-      const response = await axios.post(`${apiUrl}/register`, formData);
-      setSuccess(response.data.message); // e.g., "User registered successfully"
-      setTimeout(() => navigate('/login'), 1500); // Redirect after brief delay
+      console.log('Submitting registration with data:', formData);
+      const response = await registerUser(formData); // Use registerUser from api.js
+      console.log('Registration response:', response.data);
+      setSuccess(response.data.message);
+      setTimeout(() => navigate('/login'), 1500);
     } catch (error) {
-      console.error('Registration error:', error);
+      console.error('Registration error details:', error);
       if (error.response) {
+        // Server responded with an error (e.g., 400, 500)
         setError(error.response.data.message || 'Registration failed');
       } else if (error.request) {
-        setError('Network error: Unable to reach the server');
+        // No response received (e.g., network error, CORS issue)
+        setError('Network error: Unable to reach the server. Please check your connection or server status.');
       } else {
-        setError('An unexpected error occurred');
+        // Error setting up the request
+        setError(`An unexpected error occurred: ${error.message}`);
       }
     } finally {
-      setLoading(false); // Stop loading
+      setLoading(false);
     }
   };
 
   const handleSignInClick = () => {
-    navigate('/login'); // Navigate to login page
+    navigate('/login');
   };
 
   return (
@@ -183,7 +186,7 @@ function Registration() {
                     name="dept"
                     value={formData.dept}
                     onChange={handleChange}
-                    required // Add required attribute
+                    required
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black sm:text-sm"
                   >
                     <option value="">Select department</option>
@@ -243,14 +246,13 @@ function Registration() {
                 </div>
               </div>
 
-              {/* Display Success/Error Messages */}
               {error && <p className="text-red-500 text-sm text-center">{error}</p>}
               {success && <p className="text-green-500 text-sm text-center">{success}</p>}
 
               <div className="mt-6">
                 <button
                   type="submit"
-                  disabled={loading} // Disable button when loading
+                  disabled={loading}
                   className={`w-full rounded-md py-4 px-4 text-white font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-all duration-300 flex items-center justify-center text-lg ${
                     loading ? 'bg-gray-500 cursor-not-allowed' : 'bg-black hover:bg-black/90'
                   }`}
