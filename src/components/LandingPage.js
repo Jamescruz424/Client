@@ -114,4 +114,5 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
   <span className="block">Smart Inventory</span>
   <span className="block text-blue-600">Management System</span>
 </h1>
+<img src="/assets/images/logo.jpg" alt="Logo" />
 
