@@ -14,3 +14,16 @@ const handleChange = (e) => {
   setError('');
   console.log('Form data updated:', { ...formData, [name]: updatedValue });
 };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  setError('');
+  setSuccess('');
+
+  if (!formData.email || !formData.password || !formData.role) {
+    setError('Please fill in all required fields');
+    setLoading(false);
+    return;
+  }
+
+  console.log('Submitting login with data:', formData);
