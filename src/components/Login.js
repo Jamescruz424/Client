@@ -156,3 +156,19 @@ if (response.data.success) {
     Facebook
   </button>
 </div>
+<div className="mt-8 text-center">
+  <p className="text-sm text-gray-600">
+    Don't have an account?{' '}
+    <a href="#" className="font-medium text-black hover:text-black/80">Sign up</a>
+  </p>
+</div>
+
+<footer className="mt-8 text-center">
+  <div className="text-sm text-gray-500">
+    <span>© 2024 Company. All rights reserved.</span>
+    <span className="mx-2">·</span>
+    <a href="#" className="hover:text-gray-700">Privacy</a>
+    <span className="mx-2">·</span>
+    <a href="#" className="hover:text-gray-700">Terms</a>
+  </div>
+</footer>
