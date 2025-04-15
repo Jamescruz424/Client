@@ -185,4 +185,41 @@ const handleRequest = async () => {
 </div>
 {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 {success && <p className="text-green-500 text-sm mb-4">{success}</p>}
+<div className="space-y-4 no-print">
+  <button
+    onClick={handleRequest}
+    className={`w-full py-3 px-4 rounded flex items-center justify-center text-white ${
+      loading ? 'bg-gray-500 cursor-not-allowed' : 'bg-black hover:bg-black/90'
+    }`}
+    disabled={loading}
+  >
+    <FaHandshake className="mr-2" />
+    {loading ? 'Requesting...' : 'Request Item'}
+  </button>
+  <div className="grid grid-cols-3 gap-4">
+    <button
+      className="w-full border border-black text-black py-3 px-4 rounded hover:bg-gray-50 flex items-center justify-center"
+      disabled={loading}
+    >
+      <FaHeart className="mr-2" />
+      Save
+    </button>
+    <button
+      onClick={handleShare}
+      className="w-full border border-black text-black py-3 px-4 rounded hover:bg-gray-50 flex items-center justify-center"
+      disabled={loading}
+    >
+      <FaShareAlt className="mr-2" />
+      Share
+    </button>
+    <button
+      onClick={handlePrint}
+      className="w-full border border-black text-black py-3 px-4 rounded hover:bg-gray-50 flex items-center justify-center"
+      disabled={loading}
+    >
+      <FaPrint className="mr-2" />
+      Print
+    </button>
+  </div>
+</div>
 
