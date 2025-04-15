@@ -37,3 +37,27 @@ getTodayLogs() {
     return logDate >= today && logDate < tomorrow; // Only include today's logs
   });
 }
+// Method to download a text report of today's logs
+downloadTodayReport() {
+  const todayLogs = this.getTodayLogs(); // Get today's logs
+  if (todayLogs.length === 0) {
+    alert('No logs available for today.'); // Alert if no logs exist for today
+    return;
+  }
+
+  // Format logs as text
+  const logText = todayLogs
+    .map((log) => `[${log.timestamp}] ${log.message}`) // Format each log with timestamp and message
+    .join('\n'); // Join logs with new lines
+  
+  // Create a blob for the log text and prepare to download
+  const blob = new Blob([logText], { type: 'text/plain' });
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `logs-${new Date().toISOString().split('T')[0]}.txt`; // Name the file as logs-YYYY-MM-DD.txt
+  document.body.appendChild(a);
+  a.click(); // Trigger download
+  document.body.removeChild(a);
+  window.URL.revokeObjectURL(url); // Clean up the URL object
+}
