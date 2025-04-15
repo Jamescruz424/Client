@@ -78,4 +78,17 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
     </div>
   </div>
 </section>
+<section className="bg-gray-50 py-12">
+  <div className="max-w-4xl mx-auto text-center">
+    <h2 className="text-2xl font-extrabold text-gray-900">Watch How It Works</h2>
+    <div className="mt-6">
+      <iframe
+        className="w-full h-64 sm:h-96"
+        src="https://www.youtube.com/watch?v=0NOER-Lle-0"
+        title="YouTube video"
+        allowFullScreen
+      ></iframe>
+    </div>
+  </div>
+</section>
 
