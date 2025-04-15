@@ -29,4 +29,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
     </div>
   </div>
 </header>
+<div className="lg:w-1/2">
+  <img className="w-full" src="https://source.unsplash.com/600x400/?warehouse,inventory" alt="Inventory" />
+</div>
 
