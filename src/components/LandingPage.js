@@ -121,4 +121,16 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
   <dt className="text-sm font-medium text-gray-500">{item.title}</dt>
   <dd className="mt-1 text-3xl font-semibold text-gray-900">{item.stat}</dd>
 </div>
+<a href="#" className="text-white hover:text-gray-200">
+              <i className="fab fa-linkedin-in"></i>
+            </a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
 
+  
+}
+
+export default App;
