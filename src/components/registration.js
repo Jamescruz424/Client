@@ -99,4 +99,17 @@ const renderPasswordStrength = () => {
 <label htmlFor="department" className="block text-sm font-medium text-gray-700">
   Department <span className="text-gray-500 text-xs">(Select your department)</span>
 </label>
+// Use utility classes for consistent margin/padding adjustments
+<div className="mt-4 mb-6">
+  <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email Address</label>
+  <input
+    type="email"
+    id="email"
+    name="email"
+    value={formData.email}
+    onChange={handleChange}
+    className="block w-full mt-1 p-2 border rounded-md"
+    placeholder="you@example.com"
+  />
+</div>
 
