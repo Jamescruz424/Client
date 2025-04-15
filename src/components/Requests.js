@@ -123,3 +123,39 @@ if (error && !requests.length) return <div className="p-4 mt-14 text-center text
     />
   </div>
 </div>
+// Display success or error messages based on the actions
+{error && <p className="text-red-500 text-sm mb-4 text-center">{error}</p>}
+{success && <p className="text-green-500 text-sm mb-4 text-center">{success}</p>}
+// Render filtered requests in a table layout for desktop
+<div className="hidden md:block overflow-x-auto">
+  <table className="w-full text-sm text-left text-gray-700">
+    <thead className="text-xs uppercase bg-gray-50">
+      <tr>
+        <th className="px-4 py-3">Request ID</th>
+        <th className="px-4 py-3">Asset</th>
+        <th className="px-4 py-3">Status</th>
+        <th className="px-4 py-3">Date</th>
+        <th className="px-4 py-3">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {filteredRequests.map((req) => (
+        <tr key={req.requestId} className="bg-white border-b hover:bg-gray-50">
+          <td className="px-4 py-3">{req.requestId}</td>
+          <td className="px-4 py-3">{req.productName}</td>
+          <td className="px-4 py-3">
+            <span className={`px-2 py-1 text-xs font-medium rounded-full ${statusClasses(req.status)}`}>
+              {req.status}
+            </span>
+          </td>
+          <td className="px-4 py-3">{new Date(req.timestamp).toLocaleDateString()}</td>
+          <td className="px-4 py-3">
+            <button onClick={() => handleDelete(req.requestId)} className="text-red-600 hover:underline text-sm" disabled={loading}>
+              Delete
+            </button>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
