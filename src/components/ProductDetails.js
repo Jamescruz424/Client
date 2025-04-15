@@ -183,4 +183,6 @@ const handleRequest = async () => {
     <p className="font-medium">{product.category || 'N/A'}</p>
   </div>
 </div>
+{error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+{success && <p className="text-green-500 text-sm mb-4">{success}</p>}
 
