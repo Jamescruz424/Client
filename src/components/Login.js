@@ -48,3 +48,15 @@ if (response.data.success) {
 } else {
   setError(response.data.message || 'Login failed');
 }
+} catch (error) {
+  console.error('Login error details:', error);
+  if (error.response) {
+    setError(error.response.data.message || 'Server error occurred');
+  } else if (error.request) {
+    setError('Network error: Unable to reach the server');
+  } else {
+    setError(`An unexpected error occurred: ${error.message}`);
+  }
+} finally {
+  setLoading(false);
+}
