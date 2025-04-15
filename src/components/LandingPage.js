@@ -108,4 +108,8 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
     </div>
   </div>
 </footer>
+<h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl">
+  <span className="block">Smart Inventory</span>
+  <span className="block text-blue-600">Management System</span>
+</h1>
 
