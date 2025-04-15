@@ -24,3 +24,16 @@ addLog(message) {
   const timestamp = new Date().toISOString(); // Get current timestamp
   this.logs.push({ timestamp, message }); // Add log with timestamp
 }
+// Method to get logs for the current day
+getTodayLogs() {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Set today's date at midnight
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1); // Set tomorrow's date
+
+  // Filter logs that are from today
+  return this.logs.filter((log) => {
+    const logDate = new Date(log.timestamp); // Convert log timestamp to Date object
+    return logDate >= today && logDate < tomorrow; // Only include today's logs
+  });
+}
