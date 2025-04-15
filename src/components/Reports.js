@@ -41,3 +41,12 @@ const handleDownload = () => {
     alert("There was an error downloading the report. Please try again."); // Show error message if download fails
   }
 };
+// Add accessibility improvements to the button by adding aria-label and title attributes
+<button 
+  onClick={handleDownload} 
+  style={{ padding: '10px 20px', fontSize: '16px', cursor: 'pointer', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '5px' }}
+  aria-label="Download Today's Logs"
+  title="Click to download today's logs report"
+>
+  Download Today’s Logs
+</button>
