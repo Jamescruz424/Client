@@ -79,3 +79,47 @@ const filteredRequests = requests.filter((req) => {
 if (loading && !requests.length) return <div className="p-4 mt-14 text-center">Loading your requests...</div>;
 // Show error message if there was an issue fetching the requests
 if (error && !requests.length) return <div className="p-4 mt-14 text-center text-red-600">{error}</div>;
+// Render filter UI for selecting request type, status, and search query
+<div className="flex flex-col sm:flex-row gap-4 mb-6">
+  <div className="flex-1">
+    <select
+      name="requestType"
+      value={filters.requestType}
+      onChange={handleFilterChange}
+      className="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-indigo-500 focus:border-indigo-500"
+      disabled={loading}
+    >
+      <option>All Request Types</option>
+      <option>New Asset</option>
+      <option>Return</option>
+      <option>Repair</option>
+      <option>Transfer</option>
+    </select>
+  </div>
+  <div className="flex-1">
+    <select
+      name="status"
+      value={filters.status}
+      onChange={handleFilterChange}
+      className="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-indigo-500 focus:border-indigo-500"
+      disabled={loading}
+    >
+      <option>All Status</option>
+      <option>Pending</option>
+      <option>Approved</option>
+      <option>Rejected</option>
+      <option>Completed</option>
+    </select>
+  </div>
+  <div className="flex-1">
+    <input
+      type="text"
+      name="search"
+      value={filters.search}
+      onChange={handleFilterChange}
+      placeholder="Search by request ID..."
+      className="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-indigo-500 focus:border-indigo-500"
+      disabled={loading}
+    />
+  </div>
+</div>
