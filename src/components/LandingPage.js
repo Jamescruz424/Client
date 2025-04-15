@@ -91,4 +91,21 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
     </div>
   </div>
 </section>
+<footer className="bg-blue-600 text-white py-8">
+  <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <p className="text-lg font-semibold">Smart Inventory System</p>
+    <p className="mt-2 text-sm">© 2025 All rights reserved.</p>
+    <div className="mt-4 flex justify-center space-x-4">
+      <a href="#" className="text-white hover:text-gray-200">
+        <i className="fab fa-facebook-f"></i>
+      </a>
+      <a href="#" className="text-white hover:text-gray-200">
+        <i className="fab fa-twitter"></i>
+      </a>
+      <a href="#" className="text-white hover:text-gray-200">
+        <i className="fab fa-linkedin-in"></i>
+      </a>
+    </div>
+  </div>
+</footer>
 
