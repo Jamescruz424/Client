@@ -7,4 +7,37 @@ const [filters, setFilters] = useState({
   status: 'All Status',
   search: '',
 });
+useEffect(() => {
+  const fetchOrders = async () => {
+    const userRole = localStorage.getItem('userRole');
+    console.log('User role:', userRole);
+
+    if (!userRole || userRole !== 'admin') {
+      setError('You must be an admin to view this page. Redirecting to login...');
+      setTimeout(() => navigate('/login'), 2000);
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+    try {
+      const response = await getRequests(); // Use getRequests from api.js
+      console.log('Fetch response:', response.data);
+      if (response.data.success) {
+        setOrders(response.data.requests);
+        console.log('Set orders:', response.data.requests);
+      } else {
+        setError(response.data.message || 'Failed to fetch orders');
+      }
+    } catch (err) {
+      console.error('Fetch error:', err);
+      setError(err.response?.data?.message || 'Error fetching orders');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchOrders();
+}, [navigate]);
 
