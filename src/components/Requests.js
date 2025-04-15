@@ -194,3 +194,17 @@ const DeleteButton = ({ onClick, disabled }) => (
     Delete
   </button>
 );
+// Add redirection if the user is not logged in as a user
+if (!userId || userRole !== 'user') {
+  setError('You must be logged in as a user to view your requests. Redirecting to login...');
+  setTimeout(() => navigate('/login'), 2000);
+  setLoading(false);
+  return;
+}
+// Add redirection if the user is not logged in as a user
+if (!userId || userRole !== 'user') {
+  setError('You must be logged in as a user to view your requests. Redirecting to login...');
+  setTimeout(() => navigate('/login'), 2000);
+  setLoading(false);
+  return;
+}
