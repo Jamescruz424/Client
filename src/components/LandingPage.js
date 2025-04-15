@@ -32,4 +32,30 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 <div className="lg:w-1/2">
   <img className="w-full" src="https://source.unsplash.com/600x400/?warehouse,inventory" alt="Inventory" />
 </div>
+<section className="py-12 bg-white">
+  <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="lg:text-center">
+      <h2 className="text-base text-blue-600 font-semibold tracking-wide uppercase">Features</h2>
+      <p className="mt-2 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">Manage inventory with ease</p>
+    </div>
+    <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-8">
+      {[ 
+        { icon: "fa-chart-line", title: "Real-time Tracking", desc: "Monitor inventory levels with automatic updates." },
+        { icon: "fa-users", title: "Multi-user Management", desc: "Different access levels for administrators and users." },
+        { icon: "fa-bell", title: "Automated Alerts", desc: "Get notifications when stock is low." },
+        { icon: "fa-chart-pie", title: "Analytics Dashboard", desc: "Powerful reports for better decisions." }
+      ].map((feature, index) => (
+        <div key={index} className="flex">
+          <div className="h-12 w-12 rounded-md bg-blue-600 text-white flex items-center justify-center">
+            <i className={`fas ${feature.icon} text-xl`}></i>
+          </div>
+          <div className="ml-4">
+            <h3 className="text-lg font-medium text-gray-900">{feature.title}</h3>
+            <p className="text-base text-gray-500">{feature.desc}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
 
