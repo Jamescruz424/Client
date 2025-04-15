@@ -112,4 +112,16 @@ const renderPasswordStrength = () => {
     placeholder="you@example.com"
   />
 </div>
+// Create a helper function to render success/error messages
+const renderMessage = (type, message) => {
+  const bgColor = type === 'error' ? 'bg-red-100' : 'bg-green-100';
+  const borderColor = type === 'error' ? 'border-red-500' : 'border-green-500';
+  const textColor = type === 'error' ? 'text-red-700' : 'text-green-700';
+
+  return (
+    <div className={`${bgColor} border-l-4 ${borderColor} ${textColor} p-4 rounded-lg text-sm`}>
+      {message}
+    </div>
+  );
+};
 
