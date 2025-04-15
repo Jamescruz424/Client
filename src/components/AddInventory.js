@@ -69,6 +69,30 @@ const handleChange = (e) => {
   const { name, value } = e.target;
   setFormData({ ...formData, [name]: value });
 };
+<div className="mb-4">
+  <label className="block text-sm font-medium text-gray-700">Quantity</label>
+  <input
+    type="number"
+    name="quantity"
+    value={formData.quantity}
+    onChange={handleChange}
+    className="mt-1 w-full rounded-lg border-gray-200 focus:border-black focus:ring-black"
+    required
+  />
+</div>
+<div className="mb-4">
+  <label className="block text-sm font-medium text-gray-700">Unit Price</label>
+  <input
+    type="number"
+    step="0.01"
+    name="unit_price"
+    value={formData.unit_price}
+    onChange={handleChange}
+    className="mt-1 w-full rounded-lg border-gray-200 focus:border-black focus:ring-black"
+    required
+  />
+</div>
+
 
 
 
