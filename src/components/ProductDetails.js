@@ -152,4 +152,15 @@ const handleRequest = async () => {
     </button>
   </div>
 )}
+<div className="relative">
+  <img
+    src={product.image_url || 'https://via.placeholder.com/600'}
+    alt={product.name}
+    className="w-full h-auto rounded-lg object-cover"
+    onError={(e) => (e.target.src = 'https://via.placeholder.com/600')}
+  />
+  <div className="absolute top-4 right-4">
+    <canvas ref={barcodeRefTop} className="w-32"></canvas>
+  </div>
+</div>
 
