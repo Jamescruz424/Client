@@ -131,6 +131,13 @@ import { Outlet } from 'react-router-dom';
 <div className="p-4 lg:ml-64 mt-14">
   <Outlet />
 </div>
+{sidebarOpen && (
+  <div
+    className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"
+    onClick={toggleSidebar}
+  />
+)}
+
 
 
 
