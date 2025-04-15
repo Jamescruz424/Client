@@ -77,3 +77,5 @@ const filteredRequests = requests.filter((req) => {
 });
 // Show loading message if data is being fetched
 if (loading && !requests.length) return <div className="p-4 mt-14 text-center">Loading your requests...</div>;
+// Show error message if there was an issue fetching the requests
+if (error && !requests.length) return <div className="p-4 mt-14 text-center text-red-600">{error}</div>;
