@@ -188,3 +188,9 @@ const statusClasses = (status) => {
     </div>
   ))}
 </div>
+// Extract delete button logic for clarity and readability
+const DeleteButton = ({ onClick, disabled }) => (
+  <button onClick={onClick} className="text-red-600 hover:underline text-sm" disabled={disabled}>
+    Delete
+  </button>
+);
