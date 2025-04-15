@@ -184,4 +184,7 @@ if (error && !orders.length) return <div className="p-4 lg:ml-64 mt-14 text-red-
     ))}
   </tbody>
 </table>
+{filteredOrders.length === 0 && (
+  <div className="text-center py-4 text-gray-500">No orders found.</div>
+)}
 
