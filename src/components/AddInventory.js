@@ -143,6 +143,19 @@ const handleSubmit = async (e) => {
 <form onSubmit={handleSubmit}>
 {error && <p className="text-red-500 text-sm text-center">{error}</p>}
 {success && <p className="text-green-500 text-sm text-center">{success}</p>}
+ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+<button
+  type="submit"
+  disabled={loading}
+  className={`w-full px-4 py-2 text-white rounded-lg text-sm font-medium flex items-center justify-center ${
+    loading ? 'bg-gray-500 cursor-not-allowed' : 'bg-black hover:bg-black/90'
+  }`}
+>
+  <FontAwesomeIcon icon={faPlus} className="mr-2" />
+  {loading ? 'Adding Item...' : 'Add Item'}
+</button>
+
 
 
 
