@@ -140,6 +140,9 @@ const handleSubmit = async (e) => {
     setLoading(false);
   }
 };
+<form onSubmit={handleSubmit}>
+{error && <p className="text-red-500 text-sm text-center">{error}</p>}
+{success && <p className="text-green-500 text-sm text-center">{success}</p>}
 
 
 
