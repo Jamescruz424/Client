@@ -34,4 +34,38 @@ useEffect(() => {
     console.warn('Missing product or barcode refs:', { product, barcodeRefTop, barcodeRefBottom });
   }
 }, [product]);
+const handlePrint = () => {
+  const printContent = document.querySelector('#print-content').outerHTML;
+  const printWindow = window.open('', '_blank');
+  printWindow.document.write(`
+    <html>
+      <head>
+        <title>Print Product Details - ${product.name}</title>
+        <style>
+          body { font-family: 'Inter', sans-serif; padding: 20px; }
+          .print-container { max-width: 800px; margin: auto; }
+          img { max-width: 50%; height: auto; float: left; margin-right: 20px; }
+          canvas { display: block; margin: 10px 0; }
+          .details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+          h1 { font-size: 24px; margin-bottom: 20px; }
+          p { margin: 5px 0; }
+          .barcode-bottom { text-align: center; margin-top: 20px; }
+          @media print {
+            .no-print { display: none; }
+            img { max-width: 40%; }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="print-container">
+          ${printContent}
+        </div>
+      </body>
+    </html>
+  `);
+  printWindow.document.close();
+  printWindow.focus();
+  printWindow.print();
+  printWindow.close();
+};
 
