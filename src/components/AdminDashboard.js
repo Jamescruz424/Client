@@ -83,6 +83,18 @@ import logo from '../assets/images/logo.png';
   </div>
 </aside>
 import { faGaugeHigh } from '@fortawesome/free-solid-svg-icons';
+import { faBox } from '@fortawesome/free-solid-svg-icons';
+<li>
+  <Link
+    to="/admin-dashboard/inventory"
+    className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group"
+    onClick={() => setSidebarOpen(false)}
+  >
+    <FontAwesomeIcon icon={faBox} className="w-5 h-5 text-gray-500 group-hover:text-black" />
+    <span className="ml-3">Inventory</span>
+  </Link>
+</li>
+
 
 
 
