@@ -124,4 +124,17 @@ const renderMessage = (type, message) => {
     </div>
   );
 };
+// Add FontAwesome icon to input fields for improved UI
+<div className="relative">
+  <FontAwesomeIcon icon={faUser} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+  <input
+    type="text"
+    id="name"
+    name="name"
+    value={formData.name}
+    onChange={handleChange}
+    className="pl-10 pr-3 py-2 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+    placeholder="John Doe"
+  />
+</div>
 
