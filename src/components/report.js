@@ -97,3 +97,14 @@ downloadTodayReport() {
   document.body.removeChild(a); // Clean up after the download
   window.URL.revokeObjectURL(url); // Revoke the Blob URL after the download
 }
+// Refactor getTodayLogs method for better date comparison
+getTodayLogs() {
+  const today = new Date();
+  const startOfDay = new Date(today.setHours(0, 0, 0, 0)); // Set today's date to start of the day
+  const endOfDay = new Date(today.setHours(23, 59, 59, 999)); // Set to the end of the day
+  
+  return this.logs.filter(log => {
+    const logDate = new Date(log.timestamp);
+    return logDate >= startOfDay && logDate <= endOfDay; // Only return today's logs
+  });
+}
