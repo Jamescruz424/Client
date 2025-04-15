@@ -1,125 +1,65 @@
-// Create the ReportGenerator class to manage and store logs
 export class ReportGenerator {
-  constructor() {
-    this.logs = []; // Initialize an empty logs array
-    this.originalConsoleLog = console.log; // Store the original console.log method
-    this.overrideConsole(); // Override console.log with custom behavior
-  }
-}
-// Override console.log to capture log entries with timestamps
-overrideConsole() {
-  console.log = (...args) => {
-    const timestamp = new Date().toISOString(); // Get current timestamp
-    const logEntry = { timestamp, message: args.join(' ') }; // Store message with timestamp
-    this.logs.push(logEntry); // Push the log entry to the logs array
-    this.originalConsoleLog.apply(console, args); // Call the original console.log method
-  };
-}
-// Restore the original console.log functionality
-restoreConsole() {
-  console.log = this.originalConsoleLog; // Restore original console.log
-}
-// Method to manually add a log entry with a message
-addLog(message) {
-  const timestamp = new Date().toISOString(); // Get current timestamp
-  this.logs.push({ timestamp, message }); // Add log with timestamp
-}
-// Method to get logs for the current day
-getTodayLogs() {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0); // Set today's date at midnight
-  const tomorrow = new Date(today);
-  tomorrow.setDate(today.getDate() + 1); // Set tomorrow's date
-
-  // Filter logs that are from today
-  return this.logs.filter((log) => {
-    const logDate = new Date(log.timestamp); // Convert log timestamp to Date object
-    return logDate >= today && logDate < tomorrow; // Only include today's logs
-  });
-}
-// Method to download a text report of today's logs
-downloadTodayReport() {
-  const todayLogs = this.getTodayLogs(); // Get today's logs
-  if (todayLogs.length === 0) {
-    alert('No logs available for today.'); // Alert if no logs exist for today
-    return;
-  }
-
-  // Format logs as text
-  const logText = todayLogs
-    .map((log) => `[${log.timestamp}] ${log.message}`) // Format each log with timestamp and message
-    .join('\n'); // Join logs with new lines
+    constructor() {
+      this.logs = [];
+      this.originalConsoleLog = console.log;
+      this.overrideConsole();
+    }
   
-  // Create a blob for the log text and prepare to download
-  const blob = new Blob([logText], { type: 'text/plain' });
-  const url = window.URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `logs-${new Date().toISOString().split('T')[0]}.txt`; // Name the file as logs-YYYY-MM-DD.txt
-  document.body.appendChild(a);
-  a.click(); // Trigger download
-  document.body.removeChild(a);
-  window.URL.revokeObjectURL(url); // Clean up the URL object
-}
-// Method to clear all the logs
-clearLogs() {
-  this.logs = []; // Reset logs array to an empty array
-}
-// Create an instance of ReportGenerator for usage
-const reportGenerator = new ReportGenerator();
-export default reportGenerator; // Export the instance for usage elsewhere
-// Enhance downloadTodayReport to handle no logs found gracefully
-downloadTodayReport() {
-  const todayLogs = this.getTodayLogs();
-  if (todayLogs.length === 0) {
-    alert('No logs available for today.'); // Graceful handling of empty logs
-    return;
-  }
-}
-// Add inline comments to clarify the purpose of each method
-downloadTodayReport() {
-  // Get today's logs and check if any exist
-  const todayLogs = this.getTodayLogs(); 
-  if (todayLogs.length === 0) {
-    alert('No logs available for today.'); // Notify user if no logs exist
-    return;
-  }
-
-  // Format the logs and prepare the text for download
-  const logText = todayLogs.map(log => `[${log.timestamp}] ${log.message}`).join('\n');
-  const blob = new Blob([logText], { type: 'text/plain' }); // Create a downloadable Blob
-  const url = window.URL.createObjectURL(blob); // Generate object URL for Blob
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `logs-${new Date().toISOString().split('T')[0]}.txt`; // Set file name to today's date
-  document.body.appendChild(a);
-  a.click(); // Trigger the download by clicking the link
-  document.body.removeChild(a); // Clean up after the download
-  window.URL.revokeObjectURL(url); // Revoke the Blob URL after the download
-}
-// Refactor getTodayLogs method for better date comparison
-getTodayLogs() {
-  const today = new Date();
-  const startOfDay = new Date(today.setHours(0, 0, 0, 0)); // Set today's date to start of the day
-  const endOfDay = new Date(today.setHours(23, 59, 59, 999)); // Set to the end of the day
+    overrideConsole() {
+      console.log = (...args) => {
+        const timestamp = new Date().toISOString();
+        const logEntry = { timestamp, message: args.join(' ') };
+        this.logs.push(logEntry);
+        this.originalConsoleLog.apply(console, args);
+      };
+    }
   
-  return this.logs.filter(log => {
-    const logDate = new Date(log.timestamp);
-    return logDate >= startOfDay && logDate <= endOfDay; // Only return today's logs
-  });
-}
-// Add error handling in getTodayLogs for invalid date formats
-getTodayLogs() {
-  try {
-    const today = new Date();
-    const startOfDay = new Date(today.setHours(0, 0, 0, 0));
-    const endOfDay = new Date(today.setHours(23, 59, 59, 999));
-
-    return this.logs.filter(log => {
-      const logDate = new Date(log.timestamp);
-      return logDate >= startOfDay && logDate <= endOfDay;
-    });
-  } catch (error) {
-    console.error('Error filtering logs by date:', error);
+    restoreConsole() {
+      console.log = this.originalConsoleLog;
+    }
+  
+    addLog(message) {
+      const timestamp = new Date().toISOString();
+      this.logs.push({ timestamp, message });
+    }
+  
+    getTodayLogs() {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const tomorrow = new Date(today);
+      tomorrow.setDate(today.getDate() + 1);
+  
+      return this.logs.filter((log) => {
+        const logDate = new Date(log.timestamp);
+        return logDate >= today && logDate < tomorrow;
+      });
+    }
+  
+    downloadTodayReport() {
+      const todayLogs = this.getTodayLogs();
+      if (todayLogs.length === 0) {
+        alert('No logs available for today.');
+        return;
+      }
+  
+      const logText = todayLogs
+        .map((log) => `[${log.timestamp}] ${log.message}`)
+        .join('\n');
+      const blob = new Blob([logText], { type: 'text/plain' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `logs-${new Date().toISOString().split('T')[0]}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }
+  
+    clearLogs() {
+      this.logs = [];
+    }
   }
-}
+  
+  const reportGenerator = new ReportGenerator();
+  export default reportGenerator;
