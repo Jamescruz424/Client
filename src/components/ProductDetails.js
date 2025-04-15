@@ -68,4 +68,29 @@ const handlePrint = () => {
   printWindow.print();
   printWindow.close();
 };
+const handleShare = async () => {
+  const shareUrl = `${window.location.origin}/product/${product.id}`;
+  const shareData = {
+    title: product.name,
+    text: `Check out this product: ${product.name}`,
+    url: shareUrl,
+  };
+
+  if (navigator.share && navigator.canShare(shareData)) {
+    try {
+      await navigator.share(shareData);
+      console.log('Shared successfully');
+    } catch (error) {
+      console.error('Error sharing:', error);
+    }
+  } else {
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      alert('Product link copied to clipboard!');
+      console.log('Copied to clipboard:', shareUrl);
+    }).catch((err) => {
+      console.error('Failed to copy:', err);
+      alert('Failed to copy link. Share this URL manually: ' + shareUrl);
+    });
+  }
+};
 
