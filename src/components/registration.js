@@ -55,4 +55,28 @@ const PasswordInput = ({ value, onChange, showPassword, toggleShowPassword }) =>
     </button>
   </div>
 );
+// Use async-await more consistently in handleSubmit
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  setError('');
+  setSuccess('');
+  
+  // Password strength check
+  if (passwordStrength < 50) {
+    setError('Password is too weak.');
+    setLoading(false);
+    return;
+  }
+
+  try {
+    const response = await registerUser(formData);
+    setSuccess(response.data.message);
+    setTimeout(() => navigate('/login'), 1500);
+  } catch (error) {
+    setError(error.response ? error.response.data.message : 'Registration failed');
+  } finally {
+    setLoading(false);
+  }
+};
 
