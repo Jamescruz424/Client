@@ -79,4 +79,20 @@ const handleSubmit = async (e) => {
     setLoading(false);
   }
 };
+// Extract conditional rendering logic to a function
+const renderPasswordStrength = () => {
+  return (
+    <div className="mt-2">
+      <div className="h-1 w-full bg-gray-200 rounded-full">
+        <div
+          className={`h-1 rounded-full transition-all duration-300 ${getStrengthColor()}`}
+          style={{ width: `${passwordStrength}%` }}
+        />
+      </div>
+      <p className="mt-1 text-xs text-gray-600">
+        Strength: <span className="font-medium">{getStrengthText()}</span>
+      </p>
+    </div>
+  );
+};
 
