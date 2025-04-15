@@ -135,4 +135,21 @@ const handleRequest = async () => {
     setLoading(false);
   }
 };
+{showNotification && (
+  <div className="fixed top-4 right-4 bg-white shadow-lg rounded-lg p-4 flex items-center space-x-3 z-50 animate-fade-in-down no-print">
+    <div className="flex-shrink-0">
+      <FaBell className="text-black text-xl" />
+    </div>
+    <div>
+      <p className="font-medium text-gray-900">New Item Available!</p>
+      <p className="text-sm text-gray-500">Check out this product in our inventory.</p>
+    </div>
+    <button
+      className="ml-4 text-gray-400 hover:text-gray-500"
+      onClick={() => setShowNotification(false)}
+    >
+      <FaTimes />
+    </button>
+  </div>
+)}
 
