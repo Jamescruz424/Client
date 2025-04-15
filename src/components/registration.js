@@ -27,4 +27,10 @@ try {
 } finally {
   setLoading(false);
 }
+// Update logic for password strength color
+const getStrengthColor = () => {
+  if (passwordStrength < 33) return 'bg-red-500';
+  if (passwordStrength < 66) return 'bg-yellow-500';
+  return 'bg-green-500';
+};
 
