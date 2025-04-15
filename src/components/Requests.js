@@ -75,3 +75,5 @@ const filteredRequests = requests.filter((req) => {
     !filters.search || req.requestId.toLowerCase().includes(filters.search.toLowerCase());
   return matchesType && matchesStatus && matchesSearch;
 });
+// Show loading message if data is being fetched
+if (loading && !requests.length) return <div className="p-4 mt-14 text-center">Loading your requests...</div>;
