@@ -39,3 +39,8 @@ useEffect(() => {
 
   fetchRequests();
 }, [navigate]);
+// Handle filter changes to update filter state
+const handleFilterChange = (e) => {
+  const { name, value } = e.target;
+  setFilters({ ...filters, [name]: value });
+};
