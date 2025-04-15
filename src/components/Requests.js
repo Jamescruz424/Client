@@ -44,3 +44,26 @@ const handleFilterChange = (e) => {
   const { name, value } = e.target;
   setFilters({ ...filters, [name]: value });
 };
+// Handle request deletion with confirmation and error handling
+const handleDelete = async (requestId) => {
+  const userId = localStorage.getItem('userId');
+  if (!window.confirm('Are you sure you want to delete this request?')) return;
+
+  setLoading(true);
+  setError('');
+  setSuccess('');
+  try {
+    const response = await deleteRequest(requestId, { userId });
+    if (response.data.success) {
+      setRequests(requests.filter((req) => req.requestId !== requestId));
+      setSuccess('Request deleted successfully!');
+      setTimeout(() => setSuccess(''), 3000);
+    } else {
+      setError(response.data.message || 'Failed to delete request');
+    }
+  } catch (err) {
+    setError(err.response?.data?.message || 'Error deleting request');
+  } finally {
+    setLoading(false);
+  }
+};
