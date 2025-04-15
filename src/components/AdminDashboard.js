@@ -127,6 +127,11 @@ import { faBarcode } from '@fortawesome/free-solid-svg-icons';
     <span className="ml-3">Barcode Generator</span>
   </Link>
 </li>
+import { Outlet } from 'react-router-dom';
+<div className="p-4 lg:ml-64 mt-14">
+  <Outlet />
+</div>
+
 
 
 
