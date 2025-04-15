@@ -27,3 +27,5 @@ const handleSubmit = async (e) => {
   }
 
   console.log('Submitting login with data:', formData);
+const response = await loginUser(formData); // Use loginUser from api.js
+console.log('Login response:', response.data);
