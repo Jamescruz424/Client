@@ -68,3 +68,11 @@ clearLogs() {
 // Create an instance of ReportGenerator for usage
 const reportGenerator = new ReportGenerator();
 export default reportGenerator; // Export the instance for usage elsewhere
+// Enhance downloadTodayReport to handle no logs found gracefully
+downloadTodayReport() {
+  const todayLogs = this.getTodayLogs();
+  if (todayLogs.length === 0) {
+    alert('No logs available for today.'); // Graceful handling of empty logs
+    return;
+  }
+}
