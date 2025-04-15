@@ -21,3 +21,15 @@ const handleDownload = () => {
   reportGenerator.downloadTodayReport(); // Trigger the download
   alert("Downloading today's logs..."); // Show confirmation message
 };
+// Add some basic styling to the button to improve the UI
+return (
+  <div>
+    <h2>Reports</h2>
+    <button 
+      onClick={handleDownload} 
+      style={{ padding: '10px 20px', fontSize: '16px', cursor: 'pointer', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '5px' }}
+    >
+      Download Today’s Logs
+    </button>
+  </div>
+);
