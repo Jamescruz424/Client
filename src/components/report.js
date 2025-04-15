@@ -76,3 +76,24 @@ downloadTodayReport() {
     return;
   }
 }
+// Add inline comments to clarify the purpose of each method
+downloadTodayReport() {
+  // Get today's logs and check if any exist
+  const todayLogs = this.getTodayLogs(); 
+  if (todayLogs.length === 0) {
+    alert('No logs available for today.'); // Notify user if no logs exist
+    return;
+  }
+
+  // Format the logs and prepare the text for download
+  const logText = todayLogs.map(log => `[${log.timestamp}] ${log.message}`).join('\n');
+  const blob = new Blob([logText], { type: 'text/plain' }); // Create a downloadable Blob
+  const url = window.URL.createObjectURL(blob); // Generate object URL for Blob
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `logs-${new Date().toISOString().split('T')[0]}.txt`; // Set file name to today's date
+  document.body.appendChild(a);
+  a.click(); // Trigger the download by clicking the link
+  document.body.removeChild(a); // Clean up after the download
+  window.URL.revokeObjectURL(url); // Revoke the Blob URL after the download
+}
