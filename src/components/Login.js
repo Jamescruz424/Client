@@ -29,3 +29,22 @@ const handleSubmit = async (e) => {
   console.log('Submitting login with data:', formData);
 const response = await loginUser(formData); // Use loginUser from api.js
 console.log('Login response:', response.data);
+if (response.data.success) {
+  const { role, user } = response.data;
+  localStorage.setItem('userId', user.id);
+  localStorage.setItem('userRole', role);
+  console.log('Stored userId:', user.id, 'Role:', role);
+
+  setSuccess('Login successful! Redirecting...');
+  setTimeout(() => {
+    if (role === 'admin') {
+      navigate('/admin-dashboard');
+    } else if (role === 'user') {
+      navigate('/user-dashboard');
+    } else {
+      setError('Unknown role received from server');
+    }
+  }, 1500);
+} else {
+  setError(response.data.message || 'Login failed');
+}
