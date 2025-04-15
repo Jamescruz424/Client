@@ -33,3 +33,11 @@ return (
     </button>
   </div>
 );
+// Handle potential errors during the report download process
+const handleDownload = () => {
+  try {
+    reportGenerator.downloadTodayReport(); // Attempt to download the report
+  } catch (error) {
+    alert("There was an error downloading the report. Please try again."); // Show error message if download fails
+  }
+};
