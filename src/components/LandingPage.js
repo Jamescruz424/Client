@@ -58,4 +58,24 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
     </div>
   </div>
 </section>
+<section className="bg-gray-50 py-12">
+  <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="lg:text-center">
+      <h2 className="text-base text-blue-600 font-semibold tracking-wide uppercase">Statistics</h2>
+      <p className="mt-2 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">Trusted by businesses worldwide</p>
+    </div>
+    <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-5">
+      {[ 
+        { title: "Total Users", stat: "10,000+" },
+        { title: "Items Tracked", stat: "1M+" },
+        { title: "Hours Saved", stat: "100,000+" }
+      ].map((item, index) => (
+        <div key={index} className="bg-white shadow rounded-lg p-6 text-center">
+          <dt className="text-sm font-medium text-gray-500">{item.title}</dt>
+          <dd className="mt-1 text-3xl font-semibold text-gray-900">{item.stat}</dd>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
 
