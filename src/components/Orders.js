@@ -123,4 +123,6 @@ if (error && !orders.length) return <div className="p-4 lg:ml-64 mt-14 text-red-
     />
   </div>
 </div>
+{error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+{success && <p className="text-green-500 text-sm mb-4">{success}</p>}
 
