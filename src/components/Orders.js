@@ -78,4 +78,6 @@ const filteredOrders = orders.filter((order) => {
     order.requester.toLowerCase().includes(filters.search.toLowerCase());
   return matchesType && matchesStatus && matchesSearch;
 });
+if (loading && !orders.length) return <div className="p-4 lg:ml-64 mt-14">Loading orders...</div>;
+if (error && !orders.length) return <div className="p-4 lg:ml-64 mt-14 text-red-600">{error}</div>;
 
