@@ -92,6 +92,18 @@ const handleChange = (e) => {
     required
   />
 </div>
+<div className="mb-4">
+  <label className="block text-sm font-medium text-gray-700">Image URL</label>
+  <input
+    type="text"
+    name="image_url"
+    value={formData.image_url}
+    onChange={handleChange}
+    className="mt-1 w-full rounded-lg border-gray-200 focus:border-black focus:ring-black"
+    placeholder="https://example.com/image.jpg"
+  />
+</div>
+
 
 
 
