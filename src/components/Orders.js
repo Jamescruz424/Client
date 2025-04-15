@@ -125,4 +125,63 @@ if (error && !orders.length) return <div className="p-4 lg:ml-64 mt-14 text-red-
 </div>
 {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 {success && <p className="text-green-500 text-sm mb-4">{success}</p>}
+<table className="w-full text-sm text-left">
+  <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+    <tr>
+      <th className="px-6 py-3">Request ID</th>
+      <th className="px-6 py-3">Requester</th>
+      <th className="px-6 py-3">Asset</th>
+      <th className="px-6 py-3">Status</th>
+      <th className="px-6 py-3">Date</th>
+      <th className="px-6 py-3">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {filteredOrders.map((order) => (
+      <tr key={order.requestId} className="bg-white border-b">
+        <td className="px-6 py-4">{order.requestId}</td>
+        <td className="px-6 py-4">{order.requester}</td>
+        <td className="px-6 py-4">{order.productName}</td>
+        <td className="px-6 py-4">
+          <span
+            className={`px-2 py-1 text-xs font-medium rounded-full ${
+              order.status === 'Pending'
+                ? 'text-yellow-700 bg-yellow-100'
+                : order.status === 'Approved'
+                ? 'text-green-700 bg-green-100'
+                : order.status === 'Rejected'
+                ? 'text-red-700 bg-red-100'
+                : 'text-gray-700 bg-gray-100'
+            }`}
+          >
+            {order.status}
+          </span>
+        </td>
+        <td className="px-6 py-4">{new Date(order.timestamp).toLocaleDateString()}</td>
+        <td className="px-6 py-4">
+          {order.status === 'Pending' ? (
+            <>
+              <button
+                onClick={() => handleStatusChange(order.requestId, 'Approved')}
+                className="text-black hover:underline mr-2"
+                disabled={loading}
+              >
+                Approve
+              </button>
+              <button
+                onClick={() => handleStatusChange(order.requestId, 'Rejected')}
+                className="text-red-600 hover:underline"
+                disabled={loading}
+              >
+                Reject
+              </button>
+            </>
+          ) : (
+            <span className="text-gray-500">No actions available</span>
+          )}
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>
 
