@@ -69,4 +69,13 @@ const handleStatusChange = async (requestId, newStatus) => {
     setLoading(false);
   }
 };
+const filteredOrders = orders.filter((order) => {
+  const matchesType = filters.requestType === 'All Request Types' || order.requestType === filters.requestType;
+  const matchesStatus = filters.status === 'All Status' || order.status === filters.status;
+  const matchesSearch =
+    !filters.search ||
+    order.requestId.toLowerCase().includes(filters.search.toLowerCase()) ||
+    order.requester.toLowerCase().includes(filters.search.toLowerCase());
+  return matchesType && matchesStatus && matchesSearch;
+});
 
