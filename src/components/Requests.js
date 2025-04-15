@@ -159,3 +159,16 @@ if (error && !requests.length) return <div className="p-4 mt-14 text-center text
     </tbody>
   </table>
 </div>
+// Helper function to determine classes based on request status
+const statusClasses = (status) => {
+  switch (status) {
+    case 'Pending':
+      return 'text-yellow-700 bg-yellow-100';
+    case 'Approved':
+      return 'text-green-700 bg-green-100';
+    case 'Rejected':
+      return 'text-red-700 bg-red-100';
+    default:
+      return 'text-gray-700 bg-gray-100';
+  }
+};
