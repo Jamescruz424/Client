@@ -117,4 +117,8 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 <img src="/assets/images/logo.jpg" alt="Logo" />
 <a href="#" className="border-blue-600 text-blue-600 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Home</a>
 <h2 className="text-base text-blue-600 font-semibold tracking-wide uppercase">Features</h2>
+<div key={index} className="bg-white shadow rounded-lg p-6 text-center">
+  <dt className="text-sm font-medium text-gray-500">{item.title}</dt>
+  <dd className="mt-1 text-3xl font-semibold text-gray-900">{item.stat}</dd>
+</div>
 
