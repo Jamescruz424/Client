@@ -19,3 +19,8 @@ overrideConsole() {
 restoreConsole() {
   console.log = this.originalConsoleLog; // Restore original console.log
 }
+// Method to manually add a log entry with a message
+addLog(message) {
+  const timestamp = new Date().toISOString(); // Get current timestamp
+  this.logs.push({ timestamp, message }); // Add log with timestamp
+}
