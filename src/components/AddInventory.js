@@ -32,6 +32,44 @@ export default AddInventory;
     {/* Form Fields will go here */}
   </form>
 </div>
+<div className="mb-4">
+  <label className="block text-sm font-medium text-gray-700">Item Name</label>
+  <input
+    type="text"
+    name="name"
+    value={formData.name}
+    onChange={handleChange}
+    className="mt-1 w-full rounded-lg border-gray-200 focus:border-black focus:ring-black"
+    required
+  />
+</div>
+<div className="mb-4">
+  <label className="block text-sm font-medium text-gray-700">Category</label>
+  <input
+    type="text"
+    name="category"
+    value={formData.category}
+    onChange={handleChange}
+    className="mt-1 w-full rounded-lg border-gray-200 focus:border-black focus:ring-black"
+    required
+  />
+</div>
+<div className="mb-4">
+  <label className="block text-sm font-medium text-gray-700">SKU</label>
+  <input
+    type="text"
+    name="sku"
+    value={formData.sku}
+    onChange={handleChange}
+    className="mt-1 w-full rounded-lg border-gray-200 focus:border-black focus:ring-black"
+    required
+  />
+</div>
+const handleChange = (e) => {
+  const { name, value } = e.target;
+  setFormData({ ...formData, [name]: value });
+};
+
 
 
 
