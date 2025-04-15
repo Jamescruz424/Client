@@ -95,4 +95,8 @@ const renderPasswordStrength = () => {
     </div>
   );
 };
+// Add helper text for department selection to improve accessibility
+<label htmlFor="department" className="block text-sm font-medium text-gray-700">
+  Department <span className="text-gray-500 text-xs">(Select your department)</span>
+</label>
 
