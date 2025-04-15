@@ -172,3 +172,19 @@ const statusClasses = (status) => {
       return 'text-gray-700 bg-gray-100';
   }
 };
+// Render filtered requests in a mobile card layout
+<div className="md:hidden space-y-4">
+  {filteredRequests.map((req) => (
+    <div key={req.requestId} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
+      <div className="space-y-2">
+        <p className="text-sm font-medium text-gray-900">ID: {req.requestId}</p>
+        <p className="text-xs text-gray-500">Asset: {req.productName}</p>
+        <p className="text-xs">Status: <span className={`px-2 py-1 font-medium rounded-full ${statusClasses(req.status)}`}>{req.status}</span></p>
+        <p className="text-xs text-gray-500">Date: {new Date(req.timestamp).toLocaleDateString()}</p>
+      </div>
+      <button onClick={() => handleDelete(req.requestId)} className="mt-3 w-full text-red-600 hover:underline text-sm" disabled={loading}>
+        Delete
+      </button>
+    </div>
+  ))}
+</div>
