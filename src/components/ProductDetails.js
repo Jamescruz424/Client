@@ -222,4 +222,7 @@ const handleRequest = async () => {
     </button>
   </div>
 </div>
+<div className="mt-4 flex justify-center barcode-bottom">
+  <canvas ref={barcodeRefBottom} className="w-48"></canvas>
+</div>
 
