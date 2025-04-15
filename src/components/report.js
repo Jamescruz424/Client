@@ -61,3 +61,10 @@ downloadTodayReport() {
   document.body.removeChild(a);
   window.URL.revokeObjectURL(url); // Clean up the URL object
 }
+// Method to clear all the logs
+clearLogs() {
+  this.logs = []; // Reset logs array to an empty array
+}
+// Create an instance of ReportGenerator for usage
+const reportGenerator = new ReportGenerator();
+export default reportGenerator; // Export the instance for usage elsewhere
