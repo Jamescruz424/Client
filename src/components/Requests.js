@@ -67,3 +67,11 @@ const handleDelete = async (requestId) => {
     setLoading(false);
   }
 };
+// Filter requests based on selected filters (type, status, search)
+const filteredRequests = requests.filter((req) => {
+  const matchesType = filters.requestType === 'All Request Types' || req.requestType === filters.requestType;
+  const matchesStatus = filters.status === 'All Status' || req.status === filters.status;
+  const matchesSearch =
+    !filters.search || req.requestId.toLowerCase().includes(filters.search.toLowerCase());
+  return matchesType && matchesStatus && matchesSearch;
+});
