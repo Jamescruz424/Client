@@ -16,4 +16,6 @@ const calculatePasswordStrength = (password) => {
   if (password.match(/[^A-Za-z0-9]/)) strength += 25;
   return strength;
 };
+// Remove console log for submission debug purposes
+// console.log('Submitting registration with data:', formData);
 
