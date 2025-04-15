@@ -80,4 +80,47 @@ const filteredOrders = orders.filter((order) => {
 });
 if (loading && !orders.length) return <div className="p-4 lg:ml-64 mt-14">Loading orders...</div>;
 if (error && !orders.length) return <div className="p-4 lg:ml-64 mt-14 text-red-600">{error}</div>;
+<div className="flex flex-wrap gap-4 mb-4">
+  <div className="flex-1">
+    <select
+      name="requestType"
+      value={filters.requestType}
+      onChange={handleFilterChange}
+      className="w-full border border-gray-300 rounded-lg p-2.5"
+      disabled={loading}
+    >
+      <option>All Request Types</option>
+      <option>New Asset</option>
+      <option>Return</option>
+      <option>Repair</option>
+      <option>Transfer</option>
+    </select>
+  </div>
+  <div className="flex-1">
+    <select
+      name="status"
+      value={filters.status}
+      onChange={handleFilterChange}
+      className="w-full border border-gray-300 rounded-lg p-2.5"
+      disabled={loading}
+    >
+      <option>All Status</option>
+      <option>Pending</option>
+      <option>Approved</option>
+      <option>Rejected</option>
+      <option>Completed</option>
+    </select>
+  </div>
+  <div className="flex-1">
+    <input
+      type="text"
+      name="search"
+      value={filters.search}
+      onChange={handleFilterChange}
+      placeholder="Search by requester or ID..."
+      className="w-full border border-gray-300 rounded-lg p-2.5"
+      disabled={loading}
+    />
+  </div>
+</div>
 
