@@ -94,6 +94,18 @@ import { faBox } from '@fortawesome/free-solid-svg-icons';
     <span className="ml-3">Inventory</span>
   </Link>
 </li>
+import { faClipboardList } from '@fortawesome/free-solid-svg-icons';
+<li>
+  <Link
+    to="/admin-dashboard/orders"
+    className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group"
+    onClick={() => setSidebarOpen(false)}
+  >
+    <FontAwesomeIcon icon={faClipboardList} className="w-5 h-5 text-gray-500 group-hover:text-black" />
+    <span className="ml-3">Orders</span>
+  </Link>
+</li>
+
 
 
 
