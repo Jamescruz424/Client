@@ -59,4 +59,16 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faRobot, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import logo from '../assets/images/logo.png';
+<aside
+  className={`fixed top-0 left-0 z-40 w-64 h-screen pt-16 transition-transform bg-white border-r border-gray-200 ${
+    sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+  } lg:translate-x-0`}
+>
+  <div className="h-full px-3 pb-4 overflow-y-auto bg-white">
+    <ul className="space-y-2 font-medium">
+      {/* Sidebar links here */}
+    </ul>
+  </div>
+</aside>
+
 
