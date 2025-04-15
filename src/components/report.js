@@ -108,3 +108,18 @@ getTodayLogs() {
     return logDate >= startOfDay && logDate <= endOfDay; // Only return today's logs
   });
 }
+// Add error handling in getTodayLogs for invalid date formats
+getTodayLogs() {
+  try {
+    const today = new Date();
+    const startOfDay = new Date(today.setHours(0, 0, 0, 0));
+    const endOfDay = new Date(today.setHours(23, 59, 59, 999));
+
+    return this.logs.filter(log => {
+      const logDate = new Date(log.timestamp);
+      return logDate >= startOfDay && logDate <= endOfDay;
+    });
+  } catch (error) {
+    console.error('Error filtering logs by date:', error);
+  }
+}
