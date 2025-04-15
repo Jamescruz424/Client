@@ -18,4 +18,13 @@ const calculatePasswordStrength = (password) => {
 };
 // Remove console log for submission debug purposes
 // console.log('Submitting registration with data:', formData);
+// Add a try-catch block to handle errors in the API call
+try {
+  const response = await registerUser(formData);
+  setSuccess(response.data.message);
+} catch (error) {
+  setError('An unexpected error occurred: ' + error.message);
+} finally {
+  setLoading(false);
+}
 
