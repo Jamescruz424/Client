@@ -16,3 +16,8 @@ const Reports = () => {
 };
 
 export default Reports;
+// Add a confirmation message after initiating the download
+const handleDownload = () => {
+  reportGenerator.downloadTodayReport(); // Trigger the download
+  alert("Downloading today's logs..."); // Show confirmation message
+};
