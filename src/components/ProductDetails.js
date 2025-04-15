@@ -93,4 +93,46 @@ const handleShare = async () => {
     });
   }
 };
+const handleRequest = async () => {
+  const userId = getCurrentUserId();
+  if (!userId) {
+    setError('You must be logged in to request an item. Redirecting to login...');
+    setTimeout(() => navigate('/login'), 2000);
+    return;
+  }
+
+  setLoading(true);
+  setError('');
+  setSuccess('');
+
+  const requestData = {
+    userId: userId,
+    productId: product.id,
+    productName: product.name,
+    timestamp: new Date().toISOString(),
+    status: 'Pending',
+  };
+
+  try {
+    if (!requestData.userId || !requestData.productId || !requestData.productName || !requestData.timestamp) {
+      throw new Error('Missing required fields in request payload');
+    }
+
+    console.log('Sending request payload:', JSON.stringify(requestData, null, 2));
+    const response = await createRequest(requestData); // Use createRequest from api.js
+    console.log('Server response:', JSON.stringify(response.data, null, 2));
+
+    if (response.data.success) {
+      setSuccess('Request submitted successfully!');
+      setTimeout(() => setSuccess(''), 3000); // Clear success message after 3s
+    } else {
+      setError(response.data.message || 'Failed to submit request');
+    }
+  } catch (error) {
+    console.error('Request error:', error);
+    setError(error.response?.data?.message || 'Error submitting request: ' + error.message);
+  } finally {
+    setLoading(false);
+  }
+};
 
