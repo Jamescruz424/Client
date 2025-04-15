@@ -40,4 +40,8 @@ useEffect(() => {
 
   fetchOrders();
 }, [navigate]);
+const handleFilterChange = (e) => {
+  const { name, value } = e.target;
+  setFilters({ ...filters, [name]: value });
+};
 
