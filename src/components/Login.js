@@ -140,3 +140,19 @@ if (response.data.success) {
     {loading ? 'Signing in...' : 'Sign in'}
   </button>
 </div>
+<div className="mt-6 grid grid-cols-2 gap-3">
+  <button
+    type="button"
+    className="w-full inline-flex justify-center py-2.5 px-4 border border-gray-300 rounded-md bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+  >
+    <FontAwesomeIcon icon={faGoogleFab} className="mr-2" />
+    Google
+  </button>
+  <button
+    type="button"
+    className="w-full inline-flex justify-center py-2.5 px-4 border border-gray-300 rounded-md bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+  >
+    <FontAwesomeIcon icon={faFacebookFab} className="mr-2" />
+    Facebook
+  </button>
+</div>
