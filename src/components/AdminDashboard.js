@@ -66,9 +66,23 @@ import logo from '../assets/images/logo.png';
 >
   <div className="h-full px-3 pb-4 overflow-y-auto bg-white">
     <ul className="space-y-2 font-medium">
-      {/* Sidebar links here */}
+      <li>
+    <Link
+      to="/admin-dashboard"
+      className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group"
+      onClick={() => setSidebarOpen(false)}
+    >
+      <FontAwesomeIcon
+        icon={faGaugeHigh}
+        className="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-black"
+      />
+      <span className="ml-3">Dashboard</span>
+    </Link>
+  </li>
     </ul>
   </div>
 </aside>
+import { faGaugeHigh } from '@fortawesome/free-solid-svg-icons';
+
 
 
