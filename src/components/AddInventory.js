@@ -27,5 +27,11 @@ export default AddInventory;
     {/* Form Fields will go here */}
   </form>
 </div>
+<div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 max-w-lg mt-6">
+  <form>
+    {/* Form Fields will go here */}
+  </form>
+</div>
+
 
 
