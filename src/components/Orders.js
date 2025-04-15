@@ -44,4 +44,29 @@ const handleFilterChange = (e) => {
   const { name, value } = e.target;
   setFilters({ ...filters, [name]: value });
 };
+const handleStatusChange = async (requestId, newStatus) => {
+  setLoading(true);
+  setError('');
+  setSuccess('');
+  try {
+    const response = await updateRequest(requestId, { status: newStatus }); // Use updateRequest from api.js
+    console.log('Update response:', response.data);
+    if (response.data.success) {
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order.requestId === requestId ? { ...order, status: newStatus } : order
+        )
+      );
+      setSuccess(`Order status updated to ${newStatus} successfully!`);
+      setTimeout(() => setSuccess(''), 3000); // Clear success message after 3s
+    } else {
+      setError(response.data.message || `Failed to update order status`);
+    }
+  } catch (err) {
+    console.error('Error updating order status:', err);
+    setError(err.response?.data?.message || 'Error updating order status');
+  } finally {
+    setLoading(false);
+  }
+};
 
