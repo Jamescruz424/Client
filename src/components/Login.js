@@ -70,3 +70,21 @@ if (response.data.success) {
     <span className="block sm:inline">{success}</span>
   </div>
 )}
+<div>
+  <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email address</label>
+  <div className="mt-1 relative">
+    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+      <FontAwesomeIcon icon={faEnvelope} className="text-gray-400" />
+    </div>
+    <input
+      id="email"
+      name="email"
+      type="email"
+      required
+      value={formData.email}
+      onChange={handleChange}
+      className="block w-full pl-10 rounded-md border-gray-300 focus:ring-black focus:border-black sm:text-sm"
+      placeholder="Enter your email"
+    />
+  </div>
+</div>
