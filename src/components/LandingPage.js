@@ -116,4 +116,5 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 </h1>
 <img src="/assets/images/logo.jpg" alt="Logo" />
 <a href="#" className="border-blue-600 text-blue-600 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Home</a>
+<h2 className="text-base text-blue-600 font-semibold tracking-wide uppercase">Features</h2>
 
