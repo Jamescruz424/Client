@@ -88,3 +88,30 @@ if (response.data.success) {
     />
   </div>
 </div>
+<div>
+  <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+  <div className="mt-1 relative">
+    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+      <FontAwesomeIcon icon={faLock} className="text-gray-400" />
+    </div>
+    <input
+      id="password"
+      name="password"
+      type={showPassword ? 'text' : 'password'}
+      required
+      value={formData.password}
+      onChange={handleChange}
+      className="block w-full pl-10 pr-10 rounded-md border-gray-300 focus:ring-black focus:border-black sm:text-sm"
+      placeholder="Enter your password"
+    />
+    <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+      <button
+        type="button"
+        onClick={() => setShowPassword(!showPassword)}
+        className="text-gray-400 hover:text-gray-500 focus:outline-none"
+      >
+        <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+      </button>
+    </div>
+  </div>
+</div>
