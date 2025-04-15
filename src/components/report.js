@@ -15,3 +15,7 @@ overrideConsole() {
     this.originalConsoleLog.apply(console, args); // Call the original console.log method
   };
 }
+// Restore the original console.log functionality
+restoreConsole() {
+  console.log = this.originalConsoleLog; // Restore original console.log
+}
