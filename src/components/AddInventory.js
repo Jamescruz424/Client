@@ -106,6 +106,41 @@ const handleChange = (e) => {
 const [loading, setLoading] = useState(false);
 const [error, setError] = useState('');
 const [success, setSuccess] = useState('');
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  setError('');
+  setSuccess('');
+
+  const data = {
+    name: formData.name,
+    category: formData.category,
+    sku: formData.sku,
+    quantity: parseInt(formData.quantity, 10),
+    unit_price: parseFloat(formData.unit_price),
+    image_url: formData.image_url || null,
+  };
+
+  try {
+    console.log('Submitting inventory item:', data);
+    const response = await addInventory(data);
+    console.log('Add inventory response:', response.data);
+    setSuccess(response.data.message || 'Item added successfully!');
+    setTimeout(() => navigate('/admin-dashboard/inventory'), 1500);
+  } catch (error) {
+    console.error('Error adding item:', error);
+    if (error.response) {
+      setError(error.response.data.message || 'Failed to add item');
+    } else if (error.request) {
+      setError('Network error: Unable to reach the server');
+    } else {
+      setError(`An unexpected error occurred: ${error.message}`);
+    }
+  } finally {
+    setLoading(false);
+  }
+};
+
 
 
 
