@@ -103,6 +103,10 @@ const handleChange = (e) => {
     placeholder="https://example.com/image.jpg"
   />
 </div>
+const [loading, setLoading] = useState(false);
+const [error, setError] = useState('');
+const [success, setSuccess] = useState('');
+
 
 
 
