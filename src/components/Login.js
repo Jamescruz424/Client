@@ -129,3 +129,14 @@ if (response.data.success) {
     <a href="#" className="font-medium text-black hover:text-black/80">Forgot password?</a>
   </div>
 </div>
+<div>
+  <button
+    type="submit"
+    disabled={loading}
+    className={`w-full flex justify-center py-2.5 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-black/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black ${
+      loading ? 'opacity-50 cursor-not-allowed' : ''
+    }`}
+  >
+    {loading ? 'Signing in...' : 'Sign in'}
+  </button>
+</div>
