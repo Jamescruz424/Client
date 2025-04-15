@@ -155,6 +155,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
   <FontAwesomeIcon icon={faPlus} className="mr-2" />
   {loading ? 'Adding Item...' : 'Add Item'}
 </button>
+import { addInventory } from '../services/api'; // adjust path as needed
 
 
 
