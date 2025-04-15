@@ -163,4 +163,24 @@ const handleRequest = async () => {
     <canvas ref={barcodeRefTop} className="w-32"></canvas>
   </div>
 </div>
+<div className="grid grid-cols-2 gap-4 mb-8 details-grid">
+  <div>
+    <p className="text-sm text-gray-500">Product ID</p>
+    <p className="font-medium">{product.assetId || product.sku || 'N/A'}</p>
+  </div>
+  <div>
+    <p className="text-sm text-gray-500">Unit Price</p>
+    <p className="font-medium">${product.unit_price || 'N/A'}</p>
+  </div>
+  <div>
+    <p className="text-sm text-gray-500">Availability</p>
+    <p className={`font-medium ${product.quantity > 0 ? 'text-green-600' : 'text-red-600'}`}>
+      {product.quantity > 0 ? `In Stock (${product.quantity})` : 'Out of Stock'}
+    </p>
+  </div>
+  <div>
+    <p className="text-sm text-gray-500">Category</p>
+    <p className="font-medium">{product.category || 'N/A'}</p>
+  </div>
+</div>
 
