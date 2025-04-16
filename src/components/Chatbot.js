@@ -191,6 +191,29 @@ const Chatbot = () => {
 };
 
 export default Chatbot;
+import { chat } from '../services/api'; // Adjust path as needed
+const sendMessage = async (e) => {
+  e.preventDefault();
+  if (!message.trim()) {
+    setError('Please enter a message.');
+    return;
+  }
+
+  setResponse('');
+  setError(null);
+
+  try {
+    const res = await chat(message);
+    console.log('Chat response:', res.data);
+    setResponse(res.data.response);
+    setMessage('');
+  } catch (err) {
+    console.error('Chat error:', err);
+    setError('Failed to get response from chatbot.');
+    setResponse('Error: Could not respond.');
+  }
+};
+
 
 
 
