@@ -26,5 +26,9 @@ const Chatbot = () => {
 };
 
 export default Chatbot;
+<div className="bg-white shadow-md rounded-md p-4 mb-4 h-96 overflow-y-auto">
+  <p className="text-gray-500 text-center">Ask something to get a response!</p>
+</div>
+
 
 
