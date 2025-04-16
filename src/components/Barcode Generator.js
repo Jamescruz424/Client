@@ -79,5 +79,42 @@ const handleSubmit = (e) => {
 <div className="mt-6 flex flex-col items-center">
   <svg ref={barcodeRef} className="max-w-full" />
 </div>
+ import { faDownload } from '@fortawesome/free-solid-svg-icons';
+
+const downloadBarcode = () => {
+  const svg = barcodeRef.current;
+  if (!svg) {
+    setError('No barcode generated yet.');
+    return;
+  }
+
+  const svgData = new XMLSerializer().serializeToString(svg);
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  const img = new Image();
+  img.onload = () => {
+    canvas.width = img.width;
+    canvas.height = img.height;
+    ctx.drawImage(img, 0, 0);
+    const url = canvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `barcode_${productId}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+  img.src = 'data:image/svg+xml;base64,' + btoa(svgData);
+};
+
+{barcodeRef.current && (
+  <button
+    onClick={downloadBarcode}
+    className="mt-4 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 flex items-center"
+  >
+    <FontAwesomeIcon icon={faDownload} className="mr-2" />
+    Download Barcode
+  </button>
+)}
 
 
