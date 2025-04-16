@@ -116,5 +116,9 @@ const downloadBarcode = () => {
     Download Barcode
   </button>
 )}
+ <div className="mt-6 flex flex-col items-center">
+  <svg ref={barcodeRef} className="max-w-full" />
+</div>
+
 
 
