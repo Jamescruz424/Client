@@ -27,3 +27,25 @@ import { faBarcode } from '@fortawesome/free-solid-svg-icons';
 <p className="text-sm text-gray-600 mb-6">
   Enter a product ID to generate its barcode.
 </p>
+<form onSubmit={handleSubmit} className="space-y-4">
+  <div>
+    <label htmlFor="productId" className="block text-sm font-medium text-gray-700">
+      Product ID
+    </label>
+    <input
+      type="text"
+      id="productId"
+      value={productId}
+      onChange={(e) => setProductId(e.target.value)}
+      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+      placeholder="Enter product ID (e.g., 12345)"
+    />
+  </div>
+  <button
+    type="submit"
+    className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+  >
+    Generate Barcode
+  </button>
+</form>
+
