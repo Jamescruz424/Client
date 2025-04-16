@@ -74,4 +74,10 @@ const handleSubmit = (e) => {
   e.preventDefault();
   generateBarcode();
 };
+{error && <p className="mt-4 text-red-600">{error}</p>}
+
+<div className="mt-6 flex flex-col items-center">
+  <svg ref={barcodeRef} className="max-w-full" />
+</div>
+
 
