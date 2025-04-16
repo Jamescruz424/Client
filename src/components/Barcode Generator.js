@@ -17,3 +17,13 @@ const BarcodeGenerator = () => {
 };
 
 export default BarcodeGenerator;
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBarcode } from '@fortawesome/free-solid-svg-icons';
+
+<h2 className="text-2xl font-semibold text-gray-900 mb-4 flex items-center">
+  <FontAwesomeIcon icon={faBarcode} className="mr-2 text-indigo-600" />
+  Generate Barcode (Admin)
+</h2>
+<p className="text-sm text-gray-600 mb-6">
+  Enter a product ID to generate its barcode.
+</p>
