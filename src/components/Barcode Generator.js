@@ -69,18 +69,27 @@ const generateBarcode = () => {
     console.error('Barcode generation error:', err);
   }
 };
-
 const handleSubmit = (e) => {
   e.preventDefault();
   generateBarcode();
 };
 {error && <p className="mt-4 text-red-600">{error}</p>}
-
 <div className="mt-6 flex flex-col items-center">
   <svg ref={barcodeRef} className="max-w-full" />
 </div>
- import { faDownload } from '@fortawesome/free-solid-svg-icons';
-
+<div className="mt-6 flex flex-col items-center">
+  <svg ref={barcodeRef} className="max-w-full" />
+  
+  {barcodeRef.current && (
+    <button
+      onClick={downloadBarcode}
+      className="mt-4 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 flex items-center"
+    >
+      <FontAwesomeIcon icon={faDownload} className="mr-2" />
+      Download Barcode
+    </button>
+  )}
+</div>
 const downloadBarcode = () => {
   const svg = barcodeRef.current;
   if (!svg) {
@@ -106,8 +115,7 @@ const downloadBarcode = () => {
   };
   img.src = 'data:image/svg+xml;base64,' + btoa(svgData);
 };
-
-{barcodeRef.current && (
+{productId.trim() && (
   <button
     onClick={downloadBarcode}
     className="mt-4 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 flex items-center"
@@ -116,25 +124,8 @@ const downloadBarcode = () => {
     Download Barcode
   </button>
 )}
- <div className="mt-6 flex flex-col items-center">
-  <svg ref={barcodeRef} className="max-w-full" />
-</div>
-{barcodeRef.current && (
-  <button
-    onClick={downloadBarcode}
-    className="mt-4 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 flex items-center"
-  >
-    <FontAwesomeIcon icon={faDownload} className="mr-2" />
-    Download Barcode
-  </button>
-)}
- {error && <p className="mt-4 text-red-600">{error}</p>}
-  <div className="p-6 bg-gray-50 min-h-screen">
-  <div className="max-w-md mx-auto">
-    {/* All your content */}
-  </div>
-</div>
 
+ 
 
 
 
