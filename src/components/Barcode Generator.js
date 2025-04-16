@@ -119,6 +119,15 @@ const downloadBarcode = () => {
  <div className="mt-6 flex flex-col items-center">
   <svg ref={barcodeRef} className="max-w-full" />
 </div>
+{barcodeRef.current && (
+  <button
+    onClick={downloadBarcode}
+    className="mt-4 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 flex items-center"
+  >
+    <FontAwesomeIcon icon={faDownload} className="mr-2" />
+    Download Barcode
+  </button>
+)}
 
 
 
