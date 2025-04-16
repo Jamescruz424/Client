@@ -48,4 +48,30 @@ import { faBarcode } from '@fortawesome/free-solid-svg-icons';
     Generate Barcode
   </button>
 </form>
+import JsBarcode from 'jsbarcode';
+
+const generateBarcode = () => {
+  if (!productId.trim()) {
+    setError('Please enter a product ID.');
+    return;
+  }
+
+  setError(null);
+  try {
+    JsBarcode(barcodeRef.current, productId, {
+      format: 'CODE128',
+      width: 2,
+      height: 100,
+      displayValue: true,
+    });
+  } catch (err) {
+    setError('Failed to generate barcode. Please ensure the product ID is valid.');
+    console.error('Barcode generation error:', err);
+  }
+};
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+  generateBarcode();
+};
 
