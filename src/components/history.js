@@ -24,14 +24,12 @@ const History = () => {
       setError('');
       try {
         const response = await getUserHistory(userId);
-        console.log('History response:', response.data);
         if (response.data.success) {
           setHistory(response.data.requests);
         } else {
           setError(response.data.message || 'Failed to fetch history.');
         }
       } catch (err) {
-        console.error('Fetch error:', err);
         setError(err.response?.data?.message || 'Error fetching history.');
       } finally {
         setLoading(false);
@@ -40,6 +38,7 @@ const History = () => {
 
     fetchHistory();
   }, [navigate]);
+    
 
   const filteredHistory = history.filter((req) => {
     if (filter === 'All') return true;
