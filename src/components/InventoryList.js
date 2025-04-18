@@ -81,7 +81,6 @@ useEffect(() => {
     setSelectedCategory(newCategory);
     filterInventory(searchTerm, newCategory);
   };
-
   const filterInventory = (term, category) => {
     let filtered = [...inventory];
     if (term) {
