@@ -18,10 +18,10 @@ const DashboardContent = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  useEffect(() => {
+   useEffect(() => {
     const fetchDashboardData = async () => {
       const userRole = localStorage.getItem('userRole');
-      if (!userRole || userRole !== 'admin') {
+      if (userRole !== 'admin') {
         setError('You must be an admin to view this page. Redirecting to login...');
         setTimeout(() => navigate('/login'), 2000);
         setLoading(false);
@@ -31,15 +31,13 @@ const DashboardContent = () => {
       setLoading(true);
       setError('');
       try {
-        const response = await getDashboardData(); // Use getDashboardData from api.js
-        console.log('Dashboard response:', response.data);
+        const response = await getDashboardData();
         if (response.data.success) {
           setDashboardData(response.data.data);
         } else {
           setError(response.data.message || 'Failed to fetch dashboard data');
         }
       } catch (err) {
-        console.error('Fetch error:', err);
         setError(err.response?.data?.message || 'Error fetching dashboard data');
       } finally {
         setLoading(false);
