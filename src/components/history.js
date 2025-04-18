@@ -12,7 +12,6 @@ const History = () => {
   useEffect(() => {
     const fetchHistory = async () => {
       const userId = localStorage.getItem('userId');
-      console.log('Fetching history for userId:', userId);
 
       if (!userId) {
         setError('You must be logged in. Redirecting to login...');
