@@ -63,10 +63,9 @@ useEffect(() => {
     navigate(`/admin-dashboard/edit-inventory/${itemId}`);
   };
 
-  const handleViewDetails = (item) => {
+ const handleViewDetails = (item) => {
     setSelectedProduct(item);
   };
-
   const handleCloseModal = () => {
     setSelectedProduct(null);
   };
