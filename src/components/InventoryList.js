@@ -59,9 +59,8 @@ useEffect(() => {
     }
   };
 
-  const handleEdit = (itemId) => {
-    console.log('Edit button clicked for item ID:', itemId);
-    navigate(`/admin-dashboard/edit-inventory/${itemId}`); // Fixed route to match App.js
+   const handleEdit = (itemId) => {
+    navigate(`/admin-dashboard/edit-inventory/${itemId}`);
   };
 
   const handleViewDetails = (item) => {
