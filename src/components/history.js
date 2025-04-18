@@ -40,7 +40,7 @@ const History = () => {
   }, [navigate]);
     
 
-  const filteredHistory = history.filter((req) => {
+ const filteredHistory = history.filter((req) => {
     if (filter === 'All') return true;
     if (filter === 'Issued') return req.issueDate && !req.returnDate;
     if (filter === 'Returned') return req.returnDate;
