@@ -93,31 +93,7 @@ const History = () => {
               ))
             )}
           </div>
-          {/* Mobile View: Card Layout */}
-          <div className="block md:hidden space-y-4">
-            {filteredHistory.length === 0 ? (
-              <div className="text-center py-4 text-gray-500">No history available.</div>
-            ) : (
-              filteredHistory.map((req) => (
-                <div
-                  key={req.requestId}
-                  className="bg-white p-4 rounded-lg shadow-sm border border-gray-200 flex flex-col space-y-2"
-                >
-                  <div className="text-sm text-gray-900">
-                    <strong>ID:</strong> {req.requestId}
-                  </div>
-                  <div className="text-sm text-gray-500">
-                    <p><strong>Asset:</strong> {req.productName}</p>
-                    <p><strong>Issue Date:</strong> {req.issueDate ? new Date(req.issueDate).toLocaleDateString() : 'N/A'}</p>
-                    <p><strong>Return Date:</strong> {req.returnDate ? new Date(req.returnDate).toLocaleDateString() : 'N/A'}</p>
-                    <p><strong>Status:</strong> {req.returnDate ? 'Returned' : req.issueDate ? 'Issued' : 'N/A'}</p>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-          {/* Desktop View: Table Layout */}
-          <div className="hidden md:block overflow-x-auto">
+         <div className="hidden md:block overflow-x-auto">
             {filteredHistory.length === 0 ? (
               <div className="text-center py-4 text-gray-500">No history available.</div>
             ) : (
