@@ -1,24 +1,21 @@
 import axios from 'axios';
 
-// Use environment variable or fallback to your Flask API URL
-const API_URL = process.env.REACT_APP_API_URL || 'https://server-ywxs.onrender.com';
+const API_URL = 'http://127.0.0.1:5000';
 
 const api = axios.create({
   baseURL: API_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  timeout: 10000, // 10-second timeout to avoid hanging on slow responses
-  // withCredentials: true, // Uncomment if your API uses cookies/auth later
+  timeout: 20000,
 });
 
-// Add request/response interceptors for detailed debugging
 api.interceptors.request.use(
   (config) => {
+    if (config.data instanceof FormData) {
+      delete config.headers['Content-Type'];
+    }
     console.log('Request Sent:', {
       url: config.url,
       method: config.method,
-      data: config.data,
+      data: config.data instanceof FormData ? 'FormData' : config.data,
       headers: config.headers,
     });
     return config;
@@ -34,7 +31,6 @@ api.interceptors.response.use(
     console.log('Response Received:', {
       status: response.status,
       data: response.data,
-      headers: response.headers,
     });
     return response;
   },
@@ -43,34 +39,59 @@ api.interceptors.response.use(
       console.error('Response Error:', {
         status: error.response.status,
         data: error.response.data,
-        headers: error.response.headers,
       });
-    } else if (error.request) {
-      console.error('No Response Received:', error.message);
     } else {
-      console.error('Error Setting Up Request:', error.message);
+      console.error('Error:', error.message);
     }
     return Promise.reject(error);
   }
 );
 
-// Authentication Endpoints
+// Chat
+export const chat = (message) => api.post('/chat', { message });
+
+// Authentication
 export const registerUser = (userData) => api.post('/register', userData);
 export const loginUser = (loginData) => api.post('/login', loginData);
 
-// Inventory Endpoints
+// Inventory Management
 export const getInventory = () => api.get('/inventory');
 export const addInventory = (itemData) => api.post('/inventory', itemData);
-export const updateInventory = (itemId, itemData) => api.put(`/inventory/${itemId}`, itemData);
+export const updateInventory = (itemId, itemData) =>
+  api.put(`/inventory/${itemId}`, itemData);
 export const deleteInventory = (itemId) => api.delete(`/inventory/${itemId}`);
 
-// Request Endpoints
+// Requests
 export const createRequest = (requestData) => api.post('/requests', requestData);
 export const getRequests = () => api.get('/requests');
-export const updateRequest = (requestId, requestData) => api.put(`/requests/${requestId}`, requestData);
-export const deleteRequest = (requestId, userId) => api.delete(`/requests/${requestId}`, { data: { userId } });
+export const updateRequest = (requestId, requestData) =>
+  api.put(`/requests/${requestId}`, requestData);
+export const deleteRequest = (requestId, userId) =>
+  api.delete(`/requests/${requestId}`, { data: { userId } });
+export const getUserHistory = (userId) =>
+  api.get('/history', { params: { userId } });
 
-// Dashboard Endpoint
-export const getDashboardData = () => api.get('/dashboard');
+// Asset History (Admin)
+export const getAssetHistory = (assetId) => {
+  if (!assetId) {
+    console.error('getAssetHistory: No assetId provided');
+    return Promise.reject(new Error('Asset ID is required'));
+  }
+  return api.get(`/asset-history/${assetId}`);
+};
+
+// Dashboard
+export const getDashboardData = () => api.get('/dashboard-data'); // Admin
+export const getUserDashboardData = (userId) =>
+  api.get('/user-dashboard-data', { params: { userId } }); // User
+
+// Issue and Return
+export const issueRequest = (requestId, adminId) =>
+  api.post(`/issue/${requestId}`, { adminId });
+export const returnRequest = (requestId, userId) =>
+  api.post(`/return/${requestId}`, { userId });
+
+// QR Code
+export const scanQR = (data) => api.post('/scan-qr', data);
 
 export default api;

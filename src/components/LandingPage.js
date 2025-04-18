@@ -1,7 +1,9 @@
 import React from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-function App() {
+import { Link } from "react-router-dom";
+import logo from "../assets/images/logo.png";
+import dashboard from "../assets/images/dashboard.jpg";
+function LandingPage() {
   return (
     <div className="font-inter bg-white">
       {/* Navbar */}
@@ -12,20 +14,29 @@ function App() {
               <div className="flex-shrink-0 flex items-center">
                 <img
                   className="h-8 w-auto"
-                  src="client\public\assets\images\logo.jpg"
+                  src={logo}
                   alt="Logo"
                 />
               </div>
               <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-                <a href="#" className="border-blue-600 text-blue-600 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Home</a>
+                <Link
+                  to="/"
+                  className="border-blue-600 text-blue-600 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                >
+                  Home
+                </Link>
               </div>
             </div>
             <div className="flex items-center">
-            <Link to="/login">
-              <button className="bg-white border border-blue-600 text-blue-600 px-4 py-2 text-sm font-medium mr-3">Sign In</button>
-            </Link>
-            <Link to="/register">
-              <button className="bg-blue-600 text-white px-4 py-2 text-sm font-medium">Get Started</button>
+              <Link to="/login">
+                <button className="bg-white border border-blue-600 text-blue-600 px-4 py-2 text-sm font-medium mr-3">
+                  Sign In
+                </button>
+              </Link>
+              <Link to="/register">
+                <button className="bg-blue-600 text-white px-4 py-2 text-sm font-medium">
+                  Get Started
+                </button>
               </Link>
             </div>
           </div>
@@ -44,12 +55,24 @@ function App() {
               Streamline your inventory with real-time tracking and powerful analytics.
             </p>
             <div className="mt-5 flex flex-col sm:flex-row justify-center lg:justify-start">
-              <button className="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white font-medium rounded-md mr-3">Admin Login</button>
-              <button className="w-full sm:w-auto px-6 py-3 border border-blue-600 text-blue-600 font-medium rounded-md">User Login</button>
+              <Link to="/login" state={{ role: "admin" }}>
+                <button className="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white font-medium rounded-md mr-3">
+                  Admin Login
+                </button>
+              </Link>
+              <Link to="/login" state={{ role: "user" }}>
+                <button className="w-full sm:w-auto px-6 py-3 border border-blue-600 text-blue-600 font-medium rounded-md">
+                  User Login
+                </button>
+              </Link>
             </div>
           </div>
           <div className="lg:w-1/2">
-            <img className="w-full" src="https://source.unsplash.com/600x400/?warehouse,inventory" alt="Inventory" />
+            <img
+              className="w-full"
+              src={dashboard}
+              alt="Inventory"
+            />
           </div>
         </div>
       </header>
@@ -59,7 +82,9 @@ function App() {
         <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="lg:text-center">
             <h2 className="text-base text-blue-600 font-semibold tracking-wide uppercase">Features</h2>
-            <p className="mt-2 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">Manage inventory with ease</p>
+            <p className="mt-2 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+              Manage inventory with ease
+            </p>
           </div>
           <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-8">
             {[
@@ -70,7 +95,7 @@ function App() {
             ].map((feature, index) => (
               <div key={index} className="flex">
                 <div className="h-12 w-12 rounded-md bg-blue-600 text-white flex items-center justify-center">
-                  <i className={fas ${feature.icon} text-xl}></i>
+                  <i className={`fas ${feature.icon} text-xl`}></i>
                 </div>
                 <div className="ml-4">
                   <h3 className="text-lg font-medium text-gray-900">{feature.title}</h3>
@@ -87,7 +112,9 @@ function App() {
         <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="lg:text-center">
             <h2 className="text-base text-blue-600 font-semibold tracking-wide uppercase">Statistics</h2>
-            <p className="mt-2 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">Trusted by businesses worldwide</p>
+            <p className="mt-2 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+              Trusted by businesses worldwide
+            </p>
           </div>
           <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-5">
             {[
@@ -103,15 +130,19 @@ function App() {
           </div>
         </div>
       </section>
+
       {/* YouTube Video Section */}
       <section className="bg-gray-50 py-12">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl font-extrabold text-gray-900">Watch How It Works</h2>
-          <div className="mt-6">
+          <div className="mt-6 relative" style={{ paddingBottom: "56.25%" }}>
             <iframe
-              className="w-full h-64 sm:h-96"
-              src="https://www.youtube.com/watch?v=0NOER-Lle-0"
-              title="YouTube video"
+              className="absolute top-0 left-0 w-full h-full rounded-lg"
+              src="https://www.youtube.com/embed/5CP9fycq8pk?si=rGOuMipi47eDkNkb"
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
               allowFullScreen
             ></iframe>
           </div>
@@ -138,8 +169,6 @@ function App() {
       </footer>
     </div>
   );
-
-  
 }
 
-export default App;
+export default LandingPage;
