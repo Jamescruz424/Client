@@ -2,16 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faCube,
-  faExclamationTriangle,
-  faTimesCircle,
-  faDollarSign,
-  faPlus,
-  faMinus,
-  faExclamation,
-  faFile,
-  faChartBar,
-  faBarcode,
+  faCube, faExclamationTriangle, faTimesCircle, faDollarSign,
+  faPlus, faMinus, faExclamation, faFile, faChartBar, faBarcode
 } from '@fortawesome/free-solid-svg-icons';
 import * as echarts from 'echarts';
 import { getDashboardData } from '../services/api';
@@ -32,7 +24,7 @@ const DashboardContent = () => {
   useEffect(() => {
     const fetchDashboardData = async () => {
       const userRole = localStorage.getItem('userRole');
-      if (!userRole || userRole !== 'admin') {
+      if (userRole !== 'admin') {
         setError('You must be an admin to view this page. Redirecting to login...');
         setTimeout(() => navigate('/login'), 2000);
         setLoading(false);
@@ -43,14 +35,12 @@ const DashboardContent = () => {
       setError('');
       try {
         const response = await getDashboardData();
-        console.log('Dashboard response:', response.data);
         if (response.data.success) {
           setDashboardData(response.data.data);
         } else {
           setError(response.data.message || 'Failed to fetch dashboard data');
         }
       } catch (err) {
-        console.error('Fetch error:', err);
         setError(err.response?.data?.message || 'Error fetching dashboard data');
       } finally {
         setLoading(false);
@@ -89,7 +79,7 @@ const DashboardContent = () => {
 
       const categoryChart = echarts.init(document.getElementById('categoryChart'));
       const categoryCounts = {};
-      dashboardData.low_stock_items.forEach((item) => {
+      dashboardData.low_stock_items.forEach(item => {
         categoryCounts[item.category] = (categoryCounts[item.category] || 0) + item.quantity;
       });
       const categoryData = Object.entries(categoryCounts).map(([name, value]) => ({ name, value }));
@@ -99,7 +89,7 @@ const DashboardContent = () => {
         series: [{
           type: 'pie',
           radius: ['40%', '70%'],
-          data: categoryData.length > 0 ? categoryData : [
+          data: categoryData.length ? categoryData : [
             { value: 1048, name: 'Electronics' },
             { value: 735, name: 'Clothing' },
             { value: 580, name: 'Food' },
@@ -107,7 +97,11 @@ const DashboardContent = () => {
             { value: 300, name: 'Others' },
           ],
           emphasis: {
-            itemStyle: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0, 0, 0, 0.5)' },
+            itemStyle: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)',
+            },
           },
         }],
       };
