@@ -15,6 +15,7 @@ const InventoryList = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+
   useEffect(() => {
     const fetchInventory = async () => {
       setLoading(true);
