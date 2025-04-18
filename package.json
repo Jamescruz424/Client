@@ -3,30 +3,31 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^6.7.2",          
-    "@fortawesome/fontawesome-svg-core": "^6.7.2",       
-    "@fortawesome/free-brands-svg-icons": "^6.7.2",     
-    "@fortawesome/free-solid-svg-icons": "^6.7.2",      
-    "@fortawesome/react-fontawesome": "^0.2.2",          
-    "axios": "^1.8.4",                                  
-    "echarts": "^5.6.0",                                 
-    "jsbarcode": "^3.11.6",                              
-    "react": "^18.2.0",                                
-    "react-dom": "^18.2.0",                             
-    "react-icons": "^5.5.0",                            
-    "react-router-dom": "^6.30.0",                       
-    "react-scripts": "5.0.1"                             
+    "@fortawesome/fontawesome-free": "^6.7.2",
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-brands-svg-icons": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "axios": "^1.8.4",
+    "echarts": "^5.6.0",
+    "jsbarcode": "^3.11.6",
+    "jsqr": "^1.4.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^5.5.0",
+    "react-router-dom": "^6.30.0",
+    "react-scripts": "5.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",                      
-    "build": "react-scripts build",                     
-    "test": "react-scripts test",                      
-    "eject": "react-scripts eject"                      
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.0",                          
-    "postcss": "^8.4.0",                                
-    "tailwindcss": "^3.3.0"                            
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.0",
+    "tailwindcss": "^3.3.0"
   },
   "browserslist": {
     "production": [
@@ -41,6 +42,6 @@
     ]
   },
   "engines": {
-    "node": "18.x"                                      
+    "node": "18.x"
   }
 }
