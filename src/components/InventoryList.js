@@ -91,7 +91,6 @@ useEffect(() => {
     }
     setFilteredInventory(filtered);
   };
-
   if (loading) return <div className="p-4 sm:p-8">Loading inventory...</div>;
   if (error && !inventory.length) return <div className="p-4 sm:p-8 text-red-600">{error}</div>;
 
