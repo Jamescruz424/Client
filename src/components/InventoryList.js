@@ -43,7 +43,6 @@ useEffect(() => {
       setError('');
       try {
         const response = await deleteInventory(itemId);
-        console.log('Delete response:', response.data);
         if (response.data.success) {
           const updatedInventory = inventory.filter((item) => item.id !== itemId);
           setInventory(updatedInventory);
@@ -53,7 +52,6 @@ useEffect(() => {
           setError(response.data.message || 'Failed to delete item');
         }
       } catch (error) {
-        console.error('Error deleting item:', error);
         setError(error.response?.data?.message || 'Error deleting item');
       } finally {
         setLoading(false);
