@@ -50,7 +50,6 @@ const History = () => {
   if (loading && !history.length) {
     return <div className="flex items-center justify-center min-h-screen text-gray-500">Loading history...</div>;
   }
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-4xl p-4 sm:p-6 lg:p-8">
