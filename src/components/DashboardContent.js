@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCube, faExclamationTriangle, faTimesCircle, faDollarSign, faPlus, faMinus, faExclamation, faFile, faChartBar, faBarcode } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCube, faExclamationTriangle, faTimesCircle, faDollarSign,
+  faPlus, faMinus, faExclamation, faFile, faChartBar, faBarcode
+} from '@fortawesome/free-solid-svg-icons';
 import * as echarts from 'echarts';
-import { getDashboardData } from '../services/api'; // Import from api.js (adjust path if needed)
+import { getDashboardData } from '../services/api';
 
 const DashboardContent = () => {
   const [dashboardData, setDashboardData] = useState({
