@@ -29,9 +29,7 @@ const EditInventory = () => {
       setLoading(true);
       setError('');
       try {
-        console.log('Fetching item with ID:', id);
         const response = await getInventory();
-        console.log('Inventory response:', response.data);
         if (response.data.success) {
           const item = response.data.items.find((item) => item.id === id);
           if (item) {
@@ -51,7 +49,6 @@ const EditInventory = () => {
           setError(response.data.message || 'Failed to fetch inventory');
         }
       } catch (error) {
-        console.error('Error fetching item:', error);
         setError(error.response?.data?.message || 'Error fetching item');
       } finally {
         setLoading(false);
@@ -67,7 +64,6 @@ const EditInventory = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted with ID:', id);
     if (!id) {
       setError('No item ID provided');
       setLoading(false);
@@ -102,27 +98,20 @@ const EditInventory = () => {
       data.append('image_url', formData.image_url.trim());
     }
 
-    console.log('Submitting update for item:', id);
     try {
       const response = await updateInventory(id, data);
-      console.log('Update response:', response.data);
       if (response.data.success) {
         setSuccess('Item updated successfully!');
-        console.log('Navigating to /admin-dashboard/inventory');
         setTimeout(() => navigate('/admin-dashboard/inventory'), 1500);
       } else {
         setError(response.data.message || 'Failed to update item');
       }
     } catch (error) {
-      console.error('Error updating item:', error);
       if (error.response) {
-        console.log('Server response:', error.response.data, 'Status:', error.response.status);
         setError(error.response.data.message || `Server error: ${error.response.status}`);
       } else if (error.request) {
-        console.log('No response received:', error.request);
         setError('Network error: Unable to reach the server');
       } else {
-        console.log('Request setup error:', error.message);
         setError(`An unexpected error occurred: ${error.message}`);
       }
     } finally {
