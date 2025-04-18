@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave } from '@fortawesome/free-solid-svg-icons';
@@ -29,7 +29,9 @@ const EditInventory = () => {
       setLoading(true);
       setError('');
       try {
+        console.log('Fetching item with ID:', id);
         const response = await getInventory();
+        console.log('Inventory response:', response.data);
         if (response.data.success) {
           const item = response.data.items.find((item) => item.id === id);
           if (item) {
@@ -49,6 +51,7 @@ const EditInventory = () => {
           setError(response.data.message || 'Failed to fetch inventory');
         }
       } catch (error) {
+        console.error('Error fetching item:', error);
         setError(error.response?.data?.message || 'Error fetching item');
       } finally {
         setLoading(false);
@@ -64,6 +67,7 @@ const EditInventory = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Form submitted with ID:', id);
     if (!id) {
       setError('No item ID provided');
       setLoading(false);
@@ -98,21 +102,28 @@ const EditInventory = () => {
       data.append('image_url', formData.image_url.trim());
     }
 
+    console.log('Submitting update for item:', id);
     try {
       const response = await updateInventory(id, data);
+      console.log('Update response:', response.data);
       if (response.data.success) {
         setSuccess('Item updated successfully!');
+        console.log('Navigating to /admin-dashboard/inventory');
         setTimeout(() => navigate('/admin-dashboard/inventory'), 1500);
       } else {
         setError(response.data.message || 'Failed to update item');
       }
     } catch (error) {
+      console.error('Error updating item:', error);
       if (error.response) {
-        setError(error.response.data.message || `Server error: ${error.response.status}`);
+        console.log('Server response:', error.response.data, 'Status:', error.response.status);
+        setError(error.response.data.message || Server error: ${error.response.status});
       } else if (error.request) {
+        console.log('No response received:', error.request);
         setError('Network error: Unable to reach the server');
       } else {
-        setError(`An unexpected error occurred: ${error.message}`);
+        console.log('Request setup error:', error.message);
+        setError(An unexpected error occurred: ${error.message});
       }
     } finally {
       setLoading(false);
@@ -202,9 +213,9 @@ const EditInventory = () => {
             <button
               type="submit"
               disabled={loading}
-              className={`w-full px-4 py-2 text-white rounded-lg text-sm font-medium flex items-center justify-center ${
+              className={w-full px-4 py-2 text-white rounded-lg text-sm font-medium flex items-center justify-center ${
                 loading ? 'bg-gray-500 cursor-not-allowed' : 'bg-black hover:bg-black/90'
-              }`}
+              }}
             >
               <FontAwesomeIcon icon={faSave} className="mr-2" />
               {loading ? 'Saving...' : 'Save Changes'}
@@ -216,32 +227,4 @@ const EditInventory = () => {
   );
 };
 
-export default EditInventory;
- return (
-    <main className="p-8">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Edit Inventory Item</h1>
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 max-w-lg mt-6">
-          <form onSubmit={handleSubmit}>
-            {/* Form fields omitted here for brevity */}
-            {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-            {success && <p className="text-green-500 text-sm text-center">{success}</p>}
-
-            <button
-              type="submit"
-              disabled={loading}
-              className={`w-full px-4 py-2 text-white rounded-lg text-sm font-medium flex items-center justify-center ${
-                loading ? 'bg-gray-500 cursor-not-allowed' : 'bg-black hover:bg-black/90'
-              }`}
-            >
-              <FontAwesomeIcon icon={faSave} className="mr-2" />
-              {loading ? 'Saving...' : 'Save Changes'}
-            </button>
-          </form>
-        </div>
-      </div>
-    </main>
-  );
-};
-
-export default EditInventory;
+export default EditInventory; 
