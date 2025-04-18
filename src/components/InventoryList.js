@@ -16,13 +16,12 @@ const InventoryList = () => {
   const navigate = useNavigate();
 
 
-  useEffect(() => {
+useEffect(() => {
     const fetchInventory = async () => {
       setLoading(true);
       setError('');
       try {
         const response = await getInventory();
-        console.log('Inventory response:', response.data);
         if (response.data.success) {
           setInventory(response.data.items);
           setFilteredInventory(response.data.items);
@@ -30,7 +29,6 @@ const InventoryList = () => {
           setError(response.data.message || 'Failed to load inventory');
         }
       } catch (error) {
-        console.error('Error fetching inventory:', error);
         setError(error.response?.data?.message || 'Error fetching inventory');
       } finally {
         setLoading(false);
