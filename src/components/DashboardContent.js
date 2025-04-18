@@ -52,7 +52,6 @@ const DashboardContent = () => {
 
   useEffect(() => {
     if (!loading && !error) {
-      // Inventory Value Trend Chart
       const inventoryChart = echarts.init(document.getElementById('inventoryChart'));
       const inventoryOption = {
         animation: false,
@@ -76,7 +75,7 @@ const DashboardContent = () => {
           itemStyle: { color: '#4F46E5' },
         }],
       };
-      inventoryChart.setOption(inventoryOption);
+     inventoryChart.setOption(inventoryOption);
 
       // Stock by Category Chart
       const categoryChart = echarts.init(document.getElementById('categoryChart'));
