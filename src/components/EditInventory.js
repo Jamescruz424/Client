@@ -217,3 +217,31 @@ const EditInventory = () => {
 };
 
 export default EditInventory;
+ return (
+    <main className="p-8">
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold text-gray-900">Edit Inventory Item</h1>
+        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 max-w-lg mt-6">
+          <form onSubmit={handleSubmit}>
+            {/* Form fields omitted here for brevity */}
+            {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+            {success && <p className="text-green-500 text-sm text-center">{success}</p>}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className={`w-full px-4 py-2 text-white rounded-lg text-sm font-medium flex items-center justify-center ${
+                loading ? 'bg-gray-500 cursor-not-allowed' : 'bg-black hover:bg-black/90'
+              }`}
+            >
+              <FontAwesomeIcon icon={faSave} className="mr-2" />
+              {loading ? 'Saving...' : 'Save Changes'}
+            </button>
+          </form>
+        </div>
+      </div>
+    </main>
+  );
+};
+
+export default EditInventory;
