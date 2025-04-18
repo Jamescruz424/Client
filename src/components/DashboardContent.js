@@ -21,7 +21,7 @@ const DashboardContent = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-   useEffect(() => {
+    useEffect(() => {
     const fetchDashboardData = async () => {
       const userRole = localStorage.getItem('userRole');
       if (userRole !== 'admin') {
