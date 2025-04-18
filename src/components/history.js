@@ -38,9 +38,8 @@ const History = () => {
 
     fetchHistory();
   }, [navigate]);
-    
 
- const filteredHistory = history.filter((req) => {
+  const filteredHistory = history.filter((req) => {
     if (filter === 'All') return true;
     if (filter === 'Issued') return req.issueDate && !req.returnDate;
     if (filter === 'Returned') return req.returnDate;
@@ -50,7 +49,8 @@ const History = () => {
   if (loading && !history.length) {
     return <div className="flex items-center justify-center min-h-screen text-gray-500">Loading history...</div>;
   }
-   return (
+
+  return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-4xl p-4 sm:p-6 lg:p-8">
         <h2 className="text-xl sm:text-2xl font-semibold mb-6 text-center">Your History</h2>
@@ -93,7 +93,7 @@ const History = () => {
               ))
             )}
           </div>
-         <div className="hidden md:block overflow-x-auto">
+          <div className="hidden md:block overflow-x-auto">
             {filteredHistory.length === 0 ? (
               <div className="text-center py-4 text-gray-500">No history available.</div>
             ) : (
