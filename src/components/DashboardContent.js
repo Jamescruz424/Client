@@ -127,7 +127,7 @@ const DashboardContent = () => {
     <main className="p-8">
       {/* Dashboard Overview */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Dashboard Overview</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard Overview</h1>
         <div className="grid grid-cols-4 gap-6 mt-6">
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
             <div className="flex items-center">
