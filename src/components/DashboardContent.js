@@ -125,7 +125,7 @@ const DashboardContent = () => {
 
   return (
     <main className="p-8">
-      {/* Dashboard Overview */}
+      {/* Admin Dashboard Overview */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard Overview</h1>
         <div className="grid grid-cols-4 gap-6 mt-6">
