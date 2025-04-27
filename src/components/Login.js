@@ -184,9 +184,6 @@ function Login() {
                 />
                 <label htmlFor="remember-me" className="ml-2 block text-xs sm:text-sm text-gray-700">Remember me</label>
               </div>
-              <div className="text-xs sm:text-sm">
-                <a href="#" className="font-medium text-black hover:text-black/80">Forgot password?</a>
-              </div>
             </div>
           </div>
 
