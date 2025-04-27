@@ -64,7 +64,7 @@ const InventoryList = () => {
 
   const handleEdit = (itemId) => {
     console.log('Edit button clicked for item ID:', itemId);
-    navigate(/admin-dashboard/edit-inventory/${itemId}); // Fixed route to match App.js
+    navigate(`/admin-dashboard/edit-inventory/${itemId}`); // Fixed route to match App.js
   };
 
   const handleViewDetails = (item) => {
@@ -131,6 +131,7 @@ const InventoryList = () => {
               className="w-full rounded-lg border-gray-200 focus:border-black focus:ring-black p-2"
             />
           </div>
+          <label>search</label>
         </div>
         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 
@@ -184,6 +185,7 @@ const InventoryList = () => {
         <div className="hidden md:block bg-white p-6 rounded-lg shadow-sm border border-gray-200">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
+              <caption>add image</caption>
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-2 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image</th>
@@ -260,4 +262,4 @@ const InventoryList = () => {
   );
 };
 
-export default InventoryList; 
+export default InventoryList;
