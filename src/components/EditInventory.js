@@ -117,13 +117,13 @@ const EditInventory = () => {
       console.error('Error updating item:', error);
       if (error.response) {
         console.log('Server response:', error.response.data, 'Status:', error.response.status);
-        setError(error.response.data.message || Server error: ${error.response.status});
+        setError(error.response.data.message || `Server error: ${error.response.status}`);
       } else if (error.request) {
         console.log('No response received:', error.request);
         setError('Network error: Unable to reach the server');
       } else {
         console.log('Request setup error:', error.message);
-        setError(An unexpected error occurred: ${error.message});
+        setError(`An unexpected error occurred: ${error.message}`);
       }
     } finally {
       setLoading(false);
@@ -149,6 +149,7 @@ const EditInventory = () => {
                 className="mt-1 w-full rounded-lg border-gray-200 focus:border-black focus:ring-black"
                 required
               />
+              <label>name</label>
             </div>
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700">Category</label>
@@ -159,7 +160,7 @@ const EditInventory = () => {
                 onChange={handleChange}
                 className="mt-1 w-full rounded-lg border-gray-200 focus:border-black focus:ring-black"
                 required
-              />
+              /><label>category</label>
             </div>
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700">SKU</label>
@@ -170,7 +171,7 @@ const EditInventory = () => {
                 onChange={handleChange}
                 className="mt-1 w-full rounded-lg border-gray-200 focus:border-black focus:ring-black"
                 required
-              />
+              /><label>sku</label>
             </div>
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700">Quantity</label>
@@ -204,7 +205,7 @@ const EditInventory = () => {
                 onChange={handleChange}
                 className="mt-1 w-full rounded-lg border-gray-200 focus:border-black focus:ring-black"
                 placeholder="https://example.com/image.jpg"
-              />
+              /><label>image url</label>
             </div>
 
             {error && <p className="text-red-500 text-sm text-center">{error}</p>}
@@ -213,9 +214,9 @@ const EditInventory = () => {
             <button
               type="submit"
               disabled={loading}
-              className={w-full px-4 py-2 text-white rounded-lg text-sm font-medium flex items-center justify-center ${
+              className={`w-full px-4 py-2 text-white rounded-lg text-sm font-medium flex items-center justify-center ${
                 loading ? 'bg-gray-500 cursor-not-allowed' : 'bg-black hover:bg-black/90'
-              }}
+              }`}
             >
               <FontAwesomeIcon icon={faSave} className="mr-2" />
               {loading ? 'Saving...' : 'Save Changes'}
@@ -227,4 +228,4 @@ const EditInventory = () => {
   );
 };
 
-export default EditInventory; 
+export default EditInventory;
