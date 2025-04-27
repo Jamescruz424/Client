@@ -131,24 +131,6 @@ function LandingPage() {
         </div>
       </section>
 
-      {/* YouTube Video Section */}
-      <section className="bg-gray-50 py-12">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl font-extrabold text-gray-900">Watch How It Works</h2>
-          <div className="mt-6 relative" style={{ paddingBottom: "56.25%" }}>
-            <iframe
-              className="absolute top-0 left-0 w-full h-full rounded-lg"
-              src="https://www.youtube.com/embed/5CP9fycq8pk?si=rGOuMipi47eDkNkb"
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-            ></iframe>
-          </div>
-        </div>
-      </section>
-
       {/* Footer */}
       <footer className="bg-blue-600 text-white py-8">
         <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
